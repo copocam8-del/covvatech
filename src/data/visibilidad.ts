@@ -14,7 +14,13 @@ export interface Proyecto {
   nombre: string;
   descripcion: string;
   categoria: string;
+  /** Opcional: "Publicado" o "En desarrollo" (se muestra como etiqueta chica) */
+  estado?: string;
+  /** Opcional: lista corta de funciones (idealmente 3) */
+  funciones?: string[];
   imagen: string;
+  /** Opcional: texto alternativo de la imagen (por defecto, "Imagen del proyecto …") */
+  imagenAlt?: string;
   enlace: string;
 }
 export const proyectosReales = (proyectosJson as Proyecto[]).filter((p) => tieneDato(p.nombre));

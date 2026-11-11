@@ -20,7 +20,7 @@ Sitio estático de una sola página hecho con [Astro](https://astro.build), con 
 - **Datos de contacto, redes, formulario y dominio:** `src/config/sitio.ts`
 - **Menú:** `src/data/navegacion.ts`
 - **Servicios:** `src/data/servicios.ts`
-- **Proyectos:** `src/data/proyectos.json` (imágenes en `src/assets/proyectos/`)
+- **Proyectos:** `src/data/proyectos.json` (imágenes en `src/assets/proyectos/`). Cada proyecto tiene `nombre`, `categoria`, `descripcion`, `imagen` (nombre del archivo) y `enlace`, y además los campos opcionales `estado` (`"Publicado"` o `"En desarrollo"`), `funciones` (lista de 3 ítems cortos) e `imagenAlt` (descripción de la imagen para lectores de pantalla). Si `enlace` queda vacío, la tarjeta no muestra el botón "Ver proyecto".
 - **Nosotros, fundadora y equipo:** `src/data/nosotros.ts` (fotos en `src/assets/equipo/`)
 - **Cómo trabajamos:** `src/data/proceso.ts`
 - **Suscripción y planes:** `src/data/suscripcion.ts`

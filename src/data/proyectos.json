@@ -1,23 +1,44 @@
 [
   {
-    "nombre": "[Pendiente: nombre del proyecto]",
-    "descripcion": "[Pendiente: descripción breve del proyecto, en una o dos líneas]",
-    "categoria": "[Pendiente: categoría]",
-    "imagen": "",
+    "nombre": "Corta La Bocha",
+    "categoria": "Aplicación web",
+    "estado": "Publicado",
+    "descripcion": "Juegos de fútbol para los que saben, y para los que creen que saben. Cada respuesta cuenta y el ranking dice la verdad.",
+    "funciones": [
+      "Tutti Frutti, trivia, memotest, El Impostor y desafío diario",
+      "Partidas en tiempo real con amigos o con otros jugadores",
+      "Corrección automática con inteligencia artificial"
+    ],
+    "imagen": "cortalabocha.jpg",
+    "imagenAlt": "Logo de Corta La Bocha",
+    "enlace": "https://www.cortalabocha.ar"
+  },
+  {
+    "nombre": "Cleo",
+    "categoria": "Sistema web",
+    "estado": "En desarrollo",
+    "descripcion": "Plataforma de reservas y gestión para estudios de belleza. Las clientas reservan solas desde el celular y aseguran su turno con una seña. El primer estudio en implementarla es Fresas Studio.",
+    "funciones": [
+      "Reservas online con horarios en tiempo real",
+      "Señas cobradas por Mercado Pago",
+      "Cada estudio con su propia marca y su panel de gestión"
+    ],
+    "imagen": "cleo.jpg",
+    "imagenAlt": "Logo de Cleo",
     "enlace": ""
   },
   {
-    "nombre": "[Pendiente: nombre del proyecto]",
-    "descripcion": "[Pendiente: descripción breve del proyecto, en una o dos líneas]",
-    "categoria": "[Pendiente: categoría]",
-    "imagen": "",
-    "enlace": ""
-  },
-  {
-    "nombre": "[Pendiente: nombre del proyecto]",
-    "descripcion": "[Pendiente: descripción breve del proyecto, en una o dos líneas]",
-    "categoria": "[Pendiente: categoría]",
-    "imagen": "",
+    "nombre": "RouteControl",
+    "categoria": "Aplicación web",
+    "estado": "En desarrollo",
+    "descripcion": "Plataforma para empresas de logística de última milla. Reúne en un solo lugar lo que el repartidor necesita y le muestra al responsable cómo va la operación del día.",
+    "funciones": [
+      "Carga de paquetes por escaneo y armado automático de la ruta",
+      "Registro de cada entrega con foto, incluso sin señal",
+      "Panel con mapa, alertas e informes por repartidor"
+    ],
+    "imagen": "routecontrol.jpg",
+    "imagenAlt": "Logo de RouteControl",
     "enlace": ""
   }
 ]
