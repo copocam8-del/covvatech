@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import Servicios from '../components/Servicios.astro';
+import Proyectos from '../components/Proyectos.astro';
+import Nosotros from '../components/Nosotros.astro';
+import Proceso from '../components/Proceso.astro';
+import Suscripcion from '../components/Suscripcion.astro';
+import Preguntas from '../components/Preguntas.astro';
+import Contacto from '../components/Contacto.astro';
+import Footer from '../components/Footer.astro';
+import { hayProyectos } from '../data/visibilidad';
+
+// Sin proyectos cargados, la sección Proyectos no se muestra y se ajustan los fondos
+// de Nosotros y Cómo trabajamos para que sigan alternando blanco y gris claro.
+---
+
+<Base>
+  <Navbar />
+  <main id="contenido" tabindex="-1">
+    <Hero />
+    <Servicios />
+    {hayProyectos && <Proyectos />}
+    <Nosotros alterno={!hayProyectos} />
+    <Proceso blanco={!hayProyectos} />
+    <Suscripcion />
+    <Preguntas />
+    <Contacto />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  main:focus {
+    outline: none;
+  }
+</style>

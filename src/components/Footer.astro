@@ -1,0 +1,214 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/covva-logo.png';
+import Icono from './Icono.astro';
+import { canales } from '../config/sitio';
+import { navegacionVisible as navegacion } from '../data/visibilidad';
+import { servicios } from '../data/servicios';
+
+// El footer suma dos secciones que no están en el menú principal
+const enlaces = [
+  ...navegacion.filter((n) => n.id !== 'contacto'),
+  { id: 'proceso', etiqueta: 'Cómo trabajamos' },
+  { id: 'suscripcion', etiqueta: 'Modelo de contratación' },
+  { id: 'preguntas', etiqueta: 'Preguntas frecuentes' },
+  { id: 'contacto', etiqueta: 'Contacto' },
+];
+
+const redes = [
+  { ...canales.whatsapp, icono: 'whatsapp' as const, externo: true },
+  { ...canales.instagram, icono: 'instagram' as const, externo: true },
+  { ...canales.correo, icono: 'correo' as const, externo: false },
+];
+
+const anio = new Date().getFullYear();
+---
+
+<footer class="pie zona-oscura" aria-labelledby="pie-titulo">
+  <h2 id="pie-titulo" class="sr-only">Información de Covva</h2>
+  <div class="contenedor">
+    <div class="pie__grilla">
+      <div class="pie__marca">
+        <a href="#inicio" class="pie__logo" aria-label="Covva, volver al inicio">
+          <Image src={logo} alt="" width={120} height={64} densities={[1, 2]} loading="lazy" />
+        </a>
+        <p class="pie__descripcion">
+          Consultora tecnológica. Diseñamos y desarrollamos sitios, tiendas online y sistemas web a
+          medida, por suscripción mensual.
+        </p>
+        <a href="#contacto" class="boton boton--primario boton--chico">Solicitar presupuesto</a>
+      </div>
+
+      <nav class="pie__col" aria-labelledby="pie-nav">
+        <h3 id="pie-nav" class="pie__titulo">Navegación</h3>
+        <ul role="list">
+          {enlaces.map((e) => <li><a href={`#${e.id}`}>{e.etiqueta}</a></li>)}
+        </ul>
+      </nav>
+
+      <nav class="pie__col" aria-labelledby="pie-servicios">
+        <h3 id="pie-servicios" class="pie__titulo">Servicios</h3>
+        <ul role="list">
+          {
+            servicios.map((s) => (
+              <li>
+                <a href="#servicios" data-abrir-servicio={s.id}>{s.nombre}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="pie__col">
+        <h3 class="pie__titulo">Contacto y redes</h3>
+        <ul role="list" class="pie__redes">
+          {
+            redes.map((r) => (
+              <li>
+                {r.href ? (
+                  <a href={r.href} {...(r.externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                    <Icono nombre={r.icono} tamano={18} />
+                    <span>
+                      <span class="sr-only">{r.etiqueta}: </span>
+                      {r.texto}
+                    </span>
+                    {r.externo && <span class="sr-only">(se abre en una pestaña nueva)</span>}
+                  </a>
+                ) : (
+                  <span class="pie__red-pendiente">
+                    <Icono nombre={r.icono} tamano={18} />
+                    <span class="pendiente">{r.texto}</span>
+                  </span>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="pie__base">
+      <p>© {anio} Covva. Todos los derechos reservados.</p>
+      <a href="#inicio" class="pie__arriba">
+        Volver arriba
+        <Icono nombre="arriba" tamano={16} />
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .pie {
+    padding-top: clamp(3.5rem, 8vw, 5rem);
+    color: var(--c-texto-oscuro-2);
+    font-size: 0.9375rem;
+  }
+
+  .pie__grilla {
+    display: grid;
+    gap: 2.5rem;
+    padding-bottom: clamp(2.5rem, 6vw, 3.5rem);
+  }
+
+  @media (min-width: 640px) {
+    .pie__grilla {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pie__marca {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .pie__grilla {
+      grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      gap: 3rem;
+    }
+
+    .pie__marca {
+      grid-column: auto;
+    }
+  }
+
+  .pie__marca {
+    display: grid;
+    justify-items: start;
+    gap: 1.25rem;
+    max-width: 22rem;
+  }
+
+  .pie__logo {
+    display: block;
+    border-radius: var(--radio-sm);
+  }
+
+  .pie__logo img {
+    width: 120px;
+    height: auto;
+    mix-blend-mode: lighten; /* integra el fondo negro del logo, igual que en el navbar */
+  }
+
+  .pie__titulo {
+    margin-bottom: 1rem;
+    color: var(--c-blanco);
+    font-family: var(--f-texto);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .pie__col ul {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .pie__col a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 1.75rem;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: color var(--t-rapido) ease;
+  }
+
+  .pie__col a:hover {
+    color: var(--c-blanco);
+  }
+
+  .pie__redes :global(svg) {
+    flex-shrink: 0;
+    color: var(--c-lila);
+  }
+
+  .pie__red-pendiente {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: var(--fs-sm);
+  }
+
+  .pie__base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--c-borde-oscuro);
+    font-size: var(--fs-sm);
+  }
+
+  .pie__arriba {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+
+  .pie__arriba:hover {
+    color: var(--c-blanco);
+  }
+</style>

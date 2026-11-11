@@ -1,0 +1,12 @@
+---
+/**
+ * Muestra un texto y resalta automáticamente cualquier "[Pendiente: …]" que contenga.
+ */
+interface Props {
+  texto: string;
+}
+
+const partes = Astro.props.texto.split(/(\[Pendiente:[^\]]*\])/g).filter(Boolean);
+---
+
+{partes.map((p) => (p.startsWith('[Pendiente') ? <span class="pendiente">{p}</span> : p))}

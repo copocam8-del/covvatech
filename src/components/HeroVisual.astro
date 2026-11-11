@@ -1,0 +1,492 @@
+---
+/**
+ * Composición visual del hero: "La órbita".
+ * Fragmentos de interfaz (sitio, tienda y panel) que muestran los tipos de
+ * proyecto, con una órbita detrás inspirada en la curva del logo.
+ * La estrella aparece UNA sola vez en todo el sitio: acá, recorriendo la órbita.
+ * Es decorativa: se oculta a lectores de pantalla.
+ */
+
+// Elipse centrada en (300, 280), cerrada con dos arcos para que sirva de ruta.
+const ruta = 'M 22 280 A 278 104 0 1 1 578 280 A 278 104 0 1 1 22 280 Z';
+const giro = 'rotate(-14 300 280)';
+---
+
+<div class="visual" aria-hidden="true">
+  <!-- Capa de fondo: la órbita -->
+  <svg class="visual__capa" viewBox="0 0 600 560" focusable="false">
+    <defs>
+      <linearGradient id="orbita-trazo" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#c9b8f8" stop-opacity="0.05"></stop>
+        <stop offset="0.45" stop-color="#c9b8f8" stop-opacity="0.55"></stop>
+        <stop offset="1" stop-color="#8467e8" stop-opacity="0.12"></stop>
+      </linearGradient>
+    </defs>
+    <g transform={giro}>
+      <path d={ruta} fill="none" stroke="url(#orbita-trazo)" stroke-width="1.25"></path>
+    </g>
+  </svg>
+
+  <!-- Sitio institucional -->
+  <div class="v-tarjeta v-sitio">
+    <div class="v-sitio__barra">
+      <i></i><i></i><i></i>
+      <span class="v-url"></span>
+    </div>
+    <div class="v-sitio__cuerpo">
+      <div class="v-sitio__nav">
+        <span class="v-marca"></span>
+        <span class="v-l"></span><span class="v-l"></span><span class="v-l"></span>
+        <span class="v-pildora"></span>
+      </div>
+      <div class="v-sitio__hero">
+        <div class="v-sitio__texto">
+          <span class="v-t"></span>
+          <span class="v-t v-t--corto"></span>
+          <span class="v-p"></span>
+          <span class="v-p v-p--corto"></span>
+          <span class="v-boton"></span>
+        </div>
+        <div class="v-sitio__imagen"><span></span></div>
+      </div>
+      <div class="v-sitio__cols">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tienda online -->
+  <div class="v-tarjeta v-tienda">
+    <div class="v-tienda__img">
+      <!-- Silueta de producto: un frasco -->
+      <svg class="v-producto" viewBox="0 0 60 84">
+        <ellipse cx="30" cy="80" rx="20" ry="2.6" fill="#6c4fd6" opacity="0.18"></ellipse>
+        <rect x="22" y="3" width="16" height="13" rx="2.5" fill="#6c4fd6"></rect>
+        <rect x="25" y="16" width="10" height="6" fill="#cfc3f7"></rect>
+        <rect x="11" y="22" width="38" height="56" rx="9" fill="#ffffff"></rect>
+        <rect x="11" y="22" width="38" height="56" rx="9" fill="none" stroke="#d9cffa" stroke-width="1"></rect>
+        <rect x="17" y="40" width="26" height="20" rx="3" fill="#efeafd"></rect>
+        <rect x="21" y="46" width="18" height="2.6" rx="1.3" fill="#6c4fd6" opacity="0.8"></rect>
+        <rect x="23" y="52" width="14" height="2" rx="1" fill="#b9a8f2"></rect>
+        <rect x="15" y="27" width="4" height="12" rx="2" fill="#ffffff" opacity="0.9"></rect>
+      </svg>
+    </div>
+    <span class="v-t v-t--chico"></span>
+    <span class="v-p v-p--corto"></span>
+    <div class="v-tienda__pie">
+      <span class="v-precio"></span>
+      <span class="v-boton v-boton--icono">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 7h12l-1 13H7L6 7Z"></path>
+          <path d="M9 7a3 3 0 0 1 6 0"></path>
+        </svg>
+      </span>
+    </div>
+  </div>
+
+  <!-- Sistema / panel de gestión -->
+  <div class="v-tarjeta v-panel">
+    <div class="v-panel__cab">
+      <span class="v-l v-l--claro"></span>
+      <span class="v-chip"></span>
+    </div>
+    <svg class="v-panel__grafico" viewBox="0 0 200 80" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="panel-area" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#8467e8" stop-opacity="0.35"></stop>
+          <stop offset="1" stop-color="#8467e8" stop-opacity="0"></stop>
+        </linearGradient>
+      </defs>
+      <path d="M0 62 C 22 58, 30 46, 50 48 S 80 30, 100 34 S 135 18, 150 22 S 182 8, 200 10 L 200 80 L 0 80 Z" fill="url(#panel-area)"></path>
+      <path class="v-panel__linea" d="M0 62 C 22 58, 30 46, 50 48 S 80 30, 100 34 S 135 18, 150 22 S 182 8, 200 10" fill="none" stroke="#c9b8f8" stroke-width="2" vector-effect="non-scaling-stroke" pathLength="1"></path>
+    </svg>
+    <div class="v-panel__filas">
+      <div><span class="v-l v-l--claro"></span><span class="v-progreso" style="--p: 78%"></span></div>
+      <div><span class="v-l v-l--claro"></span><span class="v-progreso" style="--p: 54%"></span></div>
+      <div><span class="v-l v-l--claro"></span><span class="v-progreso" style="--p: 66%"></span></div>
+    </div>
+  </div>
+
+  <!-- Capa frontal: la estrella recorriendo la órbita -->
+  <svg class="visual__capa visual__capa--frente" viewBox="0 0 600 560" focusable="false" data-orbita>
+    <defs>
+      <radialGradient id="estrella-halo">
+        <stop offset="0" stop-color="#c9b8f8" stop-opacity="0.7"></stop>
+        <stop offset="1" stop-color="#c9b8f8" stop-opacity="0"></stop>
+      </radialGradient>
+    </defs>
+    <g transform={giro}>
+      <path id="orbita-ruta" d={ruta} fill="none" stroke="none"></path>
+      <g transform="rotate(14)">
+        <circle r="16" fill="url(#estrella-halo)"></circle>
+        <path
+          d="M0 -12 C1.1 -2.4 2.4 -1.1 12 0 C2.4 1.1 1.1 2.4 0 12 C-1.1 2.4 -2.4 1.1 -12 0 C-2.4 -1.1 -1.1 -2.4 0 -12 Z"
+          fill="#ffffff"></path>
+        <animateMotion dur="24s" repeatCount="indefinite" begin="0s" keyPoints="0.62;1;0;0.62" keyTimes="0;0.38;0.38;1" calcMode="linear">
+          <mpath href="#orbita-ruta"></mpath>
+        </animateMotion>
+      </g>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .visual {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 600 / 560;
+    margin-inline: auto;
+    container-type: inline-size;
+  }
+
+  .visual__capa {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .visual__capa--frente {
+    z-index: 3;
+  }
+
+  /* ---------- Piezas comunes ---------- */
+  .v-tarjeta {
+    position: absolute;
+    z-index: 2;
+    border-radius: 2.4cqi;
+    animation: v-entrar 1s var(--ease) both;
+  }
+
+  .v-tarjeta span,
+  .v-tarjeta i {
+    display: block;
+  }
+
+  .v-t,
+  .v-p,
+  .v-l {
+    height: 1.5cqi;
+    border-radius: 1cqi;
+    background: #dcd6ec;
+  }
+
+  .v-t {
+    height: 2.4cqi;
+    width: 88%;
+    background: var(--c-texto);
+  }
+
+  .v-t--corto { width: 62%; }
+  .v-t--chico { height: 1.8cqi; width: 70%; }
+  .v-p { width: 92%; background: #e6e2f0; }
+  .v-p--corto { width: 58%; }
+  .v-l { width: 8cqi; height: 1.2cqi; }
+
+  .v-boton {
+    width: 13cqi;
+    height: 4.2cqi;
+    border-radius: 99px;
+    background: var(--c-violeta);
+  }
+
+  /* ---------- Sitio ---------- */
+  .v-sitio {
+    top: 7%;
+    left: 7%;
+    width: 72%;
+    background: var(--c-blanco);
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.06),
+      0 3cqi 8cqi rgb(0 0 0 / 0.45);
+    overflow: hidden;
+    animation-delay: 0.15s;
+  }
+
+  .v-sitio__barra {
+    display: flex;
+    align-items: center;
+    gap: 1cqi;
+    padding: 1.8cqi 2.4cqi;
+    background: var(--c-fondo-alt);
+    border-bottom: 1px solid var(--c-borde);
+  }
+
+  .v-sitio__barra i {
+    width: 1.4cqi;
+    height: 1.4cqi;
+    border-radius: 50%;
+    background: #d9d4e6;
+  }
+
+  .v-url {
+    flex: 1;
+    max-width: 40%;
+    height: 2.4cqi;
+    margin-left: 3cqi;
+    border-radius: 99px;
+    background: var(--c-blanco);
+    border: 1px solid var(--c-borde);
+  }
+
+  .v-sitio__cuerpo {
+    padding: 2.6cqi 3.4cqi 3.4cqi;
+  }
+
+  .v-sitio__nav {
+    display: flex;
+    align-items: center;
+    gap: 2.2cqi;
+    margin-bottom: 4.5cqi;
+  }
+
+  .v-marca {
+    width: 3cqi;
+    height: 3cqi;
+    margin-right: auto;
+    border-radius: 0.9cqi;
+    background: var(--c-negro);
+  }
+
+  .v-sitio__nav .v-l { width: 5.5cqi; }
+
+  .v-pildora {
+    width: 9cqi;
+    height: 3cqi;
+    border-radius: 99px;
+    border: 1px solid var(--c-violeta);
+  }
+
+  .v-sitio__hero {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 3.4cqi;
+    align-items: center;
+    margin-bottom: 4cqi;
+  }
+
+  .v-sitio__texto {
+    display: grid;
+    gap: 1.4cqi;
+  }
+
+  .v-sitio__texto .v-p:first-of-type { margin-top: 1cqi; }
+  .v-sitio__texto .v-boton { margin-top: 1.6cqi; }
+
+  .v-sitio__imagen {
+    position: relative;
+    aspect-ratio: 1 / 0.82;
+    border-radius: 1.8cqi;
+    background: var(--c-lila-tenue);
+    overflow: hidden;
+  }
+
+  /* Forma abstracta dentro de la "imagen" del sitio */
+  .v-sitio__imagen span {
+    position: absolute;
+    inset: 22% 18% -30% 30%;
+    border-radius: 50% 50% 0 0;
+    border: 1.4cqi solid var(--c-violeta);
+    border-bottom: 0;
+    opacity: 0.85;
+  }
+
+  .v-sitio__cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2cqi;
+  }
+
+  .v-sitio__cols span {
+    height: 6cqi;
+    border-radius: 1.4cqi;
+    background: var(--c-fondo-alt);
+    border: 1px solid var(--c-borde);
+  }
+
+  /* ---------- Tienda ---------- */
+  .v-tienda {
+    left: 0;
+    bottom: 3%;
+    width: 33%;
+    display: grid;
+    gap: 1.4cqi;
+    padding: 2cqi 2cqi 2.4cqi;
+    background: var(--c-blanco);
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.06),
+      0 3cqi 8cqi rgb(0 0 0 / 0.5);
+    animation-delay: 0.35s;
+  }
+
+  .v-tienda__img {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1 / 0.8;
+    margin-bottom: 0.8cqi;
+    border-radius: 1.6cqi;
+    background: linear-gradient(160deg, var(--c-lila-tenue), #e2d9fb);
+  }
+
+  .v-producto {
+    width: auto;
+    height: 76%;
+    filter: drop-shadow(0 1.2cqi 1.6cqi rgb(108 79 214 / 0.18));
+  }
+
+  .v-tienda__pie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.8cqi;
+  }
+
+  .v-precio {
+    width: 9cqi;
+    height: 2.2cqi;
+    border-radius: 1cqi;
+    background: var(--c-texto);
+  }
+
+  .v-boton--icono {
+    display: grid !important;
+    place-items: center;
+    width: 5.4cqi;
+    height: 5.4cqi;
+    color: var(--c-blanco);
+  }
+
+  .v-boton--icono svg {
+    width: 55%;
+    height: 55%;
+  }
+
+  /* ---------- Panel ---------- */
+  .v-panel {
+    right: 0;
+    bottom: 13%;
+    width: 44%;
+    padding: 2.6cqi;
+    background: var(--c-superficie);
+    border: 1px solid var(--c-borde-oscuro);
+    box-shadow: 0 3cqi 8cqi rgb(0 0 0 / 0.5);
+    animation-delay: 0.55s;
+  }
+
+  .v-l--claro {
+    background: #3a3452;
+  }
+
+  .v-panel__cab {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2.4cqi;
+  }
+
+  .v-panel__cab .v-l { width: 12cqi; }
+
+  .v-chip {
+    width: 7cqi;
+    height: 2.6cqi;
+    border-radius: 99px;
+    background: rgb(132 103 232 / 0.22);
+    border: 1px solid rgb(201 184 248 / 0.3);
+  }
+
+  .v-panel__grafico {
+    width: 100%;
+    height: 14cqi;
+    margin-bottom: 2.4cqi;
+    overflow: visible;
+  }
+
+  .v-panel__linea {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: v-trazar 1.6s var(--ease) 0.9s forwards;
+  }
+
+  .v-panel__filas {
+    display: grid;
+    gap: 1.6cqi;
+  }
+
+  .v-panel__filas div {
+    display: grid;
+    grid-template-columns: 9cqi 1fr;
+    gap: 2cqi;
+    align-items: center;
+  }
+
+  .v-panel__filas .v-l { width: 100%; }
+
+  .v-progreso {
+    position: relative;
+    height: 1.2cqi;
+    border-radius: 99px;
+    background: #221e33;
+    overflow: hidden;
+  }
+
+  .v-progreso::after {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--p);
+    border-radius: inherit;
+    background: var(--c-violeta-claro);
+  }
+
+  /* ---------- Animaciones (se anulan con "reducir movimiento") ---------- */
+  @keyframes v-entrar {
+    from {
+      opacity: 0;
+      transform: translateY(3cqi) scale(0.98);
+    }
+  }
+
+  @keyframes v-trazar {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .v-panel__linea {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>
+
+<script>
+  // La estrella se detiene si la persona prefiere reducir el movimiento
+  // y también cuando el hero no está a la vista (ahorra batería y CPU).
+  const svg = document.querySelector<SVGSVGElement>('[data-orbita]');
+  if (svg) {
+    const reducir = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let visible = true;
+
+    const aplicar = () => {
+      if (reducir.matches) {
+        svg.pauseAnimations();
+        svg.setCurrentTime(2); // posición fija y prolija
+      } else if (visible) {
+        svg.unpauseAnimations();
+      } else {
+        svg.pauseAnimations();
+      }
+    };
+
+    reducir.addEventListener('change', aplicar);
+    new IntersectionObserver(([entrada]) => {
+      visible = entrada.isIntersecting;
+      aplicar();
+    }).observe(svg);
+    aplicar();
+  }
+</script>

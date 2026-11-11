@@ -1,0 +1,215 @@
+---
+import EncabezadoSeccion from './EncabezadoSeccion.astro';
+import { pasos } from '../data/proceso';
+
+interface Props {
+  /** Fondo blanco en lugar de gris claro (para alternar con las secciones vecinas) */
+  blanco?: boolean;
+}
+const { blanco = false } = Astro.props;
+---
+
+<section
+  id="proceso"
+  class:list={['seccion', 'proceso', { 'proceso--blanco': blanco }]}
+  aria-labelledby="proceso-titulo"
+>
+  <div class="contenedor">
+    <EncabezadoSeccion etiqueta="Cómo trabajamos" titulo="Un proceso claro, de principio a fin" id="proceso-titulo">
+      Sabés en qué etapa está tu proyecto y qué viene después.
+    </EncabezadoSeccion>
+
+    <ol class="pasos" role="list" data-revelar>
+      {
+        pasos.map((p, i) => (
+          <li class="paso" style={`--i: ${i}`}>
+            <span class="paso__nodo" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <div class="paso__contenido">
+              <h3 class="paso__titulo">
+                <span class="sr-only">Paso {i + 1}: </span>
+                {p.titulo}
+              </h3>
+              <p class="paso__texto">{p.texto}</p>
+              {p.nota && <p class="paso__nota">{p.nota}</p>}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .proceso {
+    background: var(--c-fondo-alt);
+  }
+
+  .proceso--blanco {
+    background: var(--c-blanco);
+  }
+
+  .pasos {
+    --nodo: 52px;
+    --linea: 2px;
+    display: grid;
+    gap: 0;
+  }
+
+  .paso {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--nodo) 1fr;
+    align-content: start;
+    gap: 1.25rem;
+    padding-bottom: 2.25rem;
+  }
+
+  .paso:last-child {
+    padding-bottom: 0;
+  }
+
+  /* Línea que conecta cada paso con el siguiente (base gris + relleno violeta) */
+  .paso:not(:last-child)::before,
+  .paso:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: calc(var(--nodo) / 2 - var(--linea) / 2);
+    top: var(--nodo);
+    bottom: 0;
+    width: var(--linea);
+    border-radius: 2px;
+  }
+
+  .paso::before {
+    background: var(--c-borde);
+  }
+
+  .paso::after {
+    background: var(--c-violeta);
+    transform-origin: top;
+  }
+
+  .paso__nodo {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: var(--nodo);
+    height: var(--nodo);
+    border-radius: 50%;
+    background: var(--c-blanco);
+    border: var(--linea) solid var(--c-violeta);
+    color: var(--c-violeta);
+    font-family: var(--f-titulos);
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .paso:last-child .paso__nodo {
+    background: var(--c-violeta);
+    color: var(--c-blanco);
+  }
+
+  .paso__contenido {
+    padding-top: 0.75rem;
+  }
+
+  .paso__titulo {
+    margin-bottom: 0.4rem;
+    font-size: 1.125rem;
+  }
+
+  .paso__texto {
+    color: var(--c-texto-2);
+  }
+
+  .paso__nota {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: var(--radio-pill);
+    background: var(--c-lila-tenue);
+    color: var(--c-violeta-hover);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+  }
+
+  /* Animación: los nodos y las líneas se "encienden" en orden */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.revelar-activo) .paso::after {
+      transform: scaleY(0);
+      transition: transform 0.5s var(--ease) calc(var(--i) * 0.22s + 0.3s);
+    }
+
+    :global(.revelar-activo) .paso__nodo {
+      transform: scale(0.85);
+      border-color: var(--c-borde);
+      color: var(--c-texto-2);
+      transition:
+        transform 0.4s var(--ease) calc(var(--i) * 0.22s + 0.15s),
+        border-color 0.4s ease calc(var(--i) * 0.22s + 0.15s),
+        color 0.4s ease calc(var(--i) * 0.22s + 0.15s);
+    }
+
+    :global(.revelar-activo) .paso:last-child .paso__nodo {
+      background: var(--c-blanco);
+      transition-property: transform, border-color, color, background-color;
+    }
+
+    :global(.revelar-activo) .pasos:global(.revelado) .paso::after {
+      transform: none;
+    }
+
+    :global(.revelar-activo) .pasos:global(.revelado) .paso__nodo {
+      transform: none;
+      border-color: var(--c-violeta);
+      color: var(--c-violeta);
+    }
+
+    :global(.revelar-activo) .pasos:global(.revelado) .paso:last-child .paso__nodo {
+      background: var(--c-violeta);
+      color: var(--c-blanco);
+    }
+  }
+
+  /* ---------- Escritorio: pasos en horizontal ---------- */
+  @media (min-width: 960px) {
+    .pasos {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.5rem;
+    }
+
+    .paso {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      padding-bottom: 0;
+    }
+
+    .paso:not(:last-child)::before,
+    .paso:not(:last-child)::after {
+      left: var(--nodo);
+      right: calc(-1.5rem);
+      top: calc(var(--nodo) / 2 - var(--linea) / 2);
+      bottom: auto;
+      width: auto;
+      height: var(--linea);
+    }
+
+    .paso::after {
+      transform-origin: left;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      :global(.revelar-activo) .paso::after {
+        transform: scaleX(0);
+      }
+    }
+
+    .paso__contenido {
+      padding-top: 0;
+      padding-right: 0.5rem;
+    }
+  }
+</style>

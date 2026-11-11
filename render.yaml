@@ -1,0 +1,39 @@
+# Configuración de Render (Blueprint) para el sitio de Covva.
+# Se aplica al crear el servicio desde "New → Blueprint" en el panel de Render.
+# Si el sitio se crea como "Static Site" manualmente, estas cabeceras hay que
+# cargarlas a mano en Settings → Headers (ver README).
+
+services:
+  - type: web
+    runtime: static
+    name: covva-web
+    branch: main
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    pullRequestPreviewsEnabled: false
+    headers:
+      # --- Seguridad (todas las páginas) ---
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: Permissions-Policy
+        value: camera=(), microphone=(), geolocation=()
+      # --- Caché ---
+      # Los archivos de /_astro/ llevan un código único en el nombre: se guardan un año.
+      - path: /_astro/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      # Íconos e imagen para redes: un mes.
+      - path: /*.png
+        name: Cache-Control
+        value: public, max-age=2592000
+      - path: /favicon.ico
+        name: Cache-Control
+        value: public, max-age=2592000

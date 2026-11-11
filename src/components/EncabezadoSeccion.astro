@@ -1,0 +1,65 @@
+---
+interface Props {
+  etiqueta: string;
+  titulo: string;
+  id: string;
+  centrado?: boolean;
+}
+
+const { etiqueta, titulo, id, centrado = false } = Astro.props;
+---
+
+<header class:list={['encabezado', { 'encabezado--centrado': centrado }]} data-revelar>
+  <p class="encabezado__etiqueta">{etiqueta}</p>
+  <h2 id={id} class="encabezado__titulo">{titulo}</h2>
+  {Astro.slots.has('default') && <p class="encabezado__bajada"><slot /></p>}
+</header>
+
+<style>
+  .encabezado {
+    max-width: 42rem;
+    margin-bottom: clamp(2.5rem, 6vw, 3.75rem);
+  }
+
+  .encabezado--centrado {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .encabezado__etiqueta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    color: var(--c-violeta);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .encabezado__etiqueta::before {
+    content: '';
+    width: 1.5rem;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+  }
+
+  .encabezado__titulo {
+    font-size: var(--fs-h2);
+  }
+
+  .encabezado__bajada {
+    margin-top: 1rem;
+    color: var(--c-texto-2);
+    font-size: var(--fs-lg);
+  }
+
+  :global(.zona-oscura) .encabezado__etiqueta {
+    color: var(--c-lila);
+  }
+
+  :global(.zona-oscura) .encabezado__bajada {
+    color: var(--c-texto-oscuro-2);
+  }
+</style>

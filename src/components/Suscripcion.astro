@@ -1,0 +1,307 @@
+---
+import EncabezadoSeccion from './EncabezadoSeccion.astro';
+import Icono from './Icono.astro';
+import { componentes, condiciones } from '../data/suscripcion';
+import { planesReales, hayPlanes } from '../data/visibilidad';
+import { tieneDato } from '../config/sitio';
+
+// Mientras no haya planes cargados en suscripcion.ts, se muestra un bloque de consulta.
+// La línea de condiciones solo aparece si tiene un texto real.
+const hayCondiciones = tieneDato(condiciones);
+---
+
+<section id="suscripcion" class="seccion suscripcion zona-oscura" aria-labelledby="suscripcion-titulo">
+  <div class="contenedor">
+    <div class="sus__intro">
+      <EncabezadoSeccion
+        etiqueta="Modelo de contratación"
+        titulo="Tu web por suscripción mensual"
+        id="suscripcion-titulo"
+      />
+      <div class="sus__explicacion" data-revelar>
+        <p>
+          En lugar de afrontar todo el costo del desarrollo de una sola vez, lo distribuís en una
+          cuota mensual.
+        </p>
+        <p>
+          Lo que incluye depende del plan que elijas. En cada propuesta te detallamos qué está
+          contemplado y qué no, para que sepas exactamente qué contratás.
+        </p>
+      </div>
+    </div>
+
+    <div class="sus__componentes" data-revelar>
+      <p class="sus__subtitulo">Según el plan, la suscripción puede incluir:</p>
+      <ul role="list" class="sus__lista">
+        {
+          componentes.map((c, i) => (
+            <li class="comp">
+              <span class="comp__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="comp__titulo">{c.titulo}</h3>
+              <p class="comp__texto">{c.texto}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="sus__planes">
+      {
+        hayPlanes ? (
+          <>
+            <h3 class="sus__subtitulo sus__subtitulo--planes">Planes</h3>
+            <ul role="list" class="planes" data-revelar>
+              {planesReales.map((p) => {
+                const items = p.incluye.filter((item) => tieneDato(item));
+                return (
+                  <li class="plan">
+                    <p class="plan__nombre">{p.nombre}</p>
+                    {tieneDato(p.precio) && <p class="plan__precio">{p.precio}</p>}
+                    {tieneDato(p.descripcion) && <p class="plan__desc">{p.descripcion}</p>}
+                    {items.length > 0 && (
+                      <ul role="list" class="plan__incluye">
+                        {items.map((item) => (
+                          <li>
+                            <Icono nombre="check" tamano={18} />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+
+            <div class="sus__pie" data-revelar>
+              {hayCondiciones && <p class="sus__condiciones">{condiciones}</p>}
+              <a href="#contacto" class="boton boton--primario">
+                Consultar planes
+                <Icono nombre="flecha" />
+              </a>
+            </div>
+          </>
+        ) : (
+          <div class="sus__medida" data-revelar>
+            <p class="sus__medida-texto">
+              Armamos un plan a medida según tu proyecto. Consultanos y te enviamos una propuesta con
+              el detalle de lo que incluye.
+            </p>
+            <a href="#contacto" class="boton boton--primario">
+              Consultar planes
+              <Icono nombre="flecha" />
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .suscripcion {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+  }
+
+  /* Un único resplandor tenue, en una esquina */
+  .suscripcion::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(ellipse 40% 45% at 0% 0%, rgb(108 79 214 / 0.2), transparent 70%);
+    pointer-events: none;
+  }
+
+  .sus__intro {
+    display: grid;
+    gap: 0 4rem;
+    margin-bottom: clamp(2.5rem, 6vw, 3.5rem);
+  }
+
+  .sus__intro :global(.encabezado) {
+    margin-bottom: 1.5rem;
+  }
+
+  .sus__explicacion {
+    display: grid;
+    gap: 1rem;
+    color: var(--c-texto-oscuro-2);
+    font-size: var(--fs-lg);
+  }
+
+  .sus__explicacion p:first-child {
+    color: var(--c-blanco);
+  }
+
+  @media (min-width: 960px) {
+    .sus__intro {
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+    }
+
+    .sus__intro :global(.encabezado) {
+      margin-bottom: 0;
+    }
+  }
+
+  .sus__subtitulo {
+    margin-bottom: 1.25rem;
+    color: var(--c-lila);
+    font-family: var(--f-texto);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- Qué puede incluir ---------- */
+  .sus__componentes {
+    margin-bottom: clamp(3rem, 7vw, 4.5rem);
+  }
+
+  .sus__lista {
+    display: grid;
+    gap: 1px;
+    background: var(--c-borde-oscuro);
+    border: 1px solid var(--c-borde-oscuro);
+    border-radius: var(--radio-lg);
+    overflow: hidden;
+  }
+
+  @media (min-width: 640px) {
+    .sus__lista {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .sus__lista {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .comp {
+    padding: 1.75rem 1.5rem;
+    background: var(--c-negro);
+  }
+
+  .comp__num {
+    display: block;
+    margin-bottom: 1.5rem;
+    color: var(--c-violeta-claro);
+    font-family: var(--f-titulos);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+
+  .comp__titulo {
+    margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+  }
+
+  .comp__texto {
+    color: var(--c-texto-oscuro-2);
+    font-size: 0.9375rem;
+  }
+
+  /* ---------- Planes ---------- */
+  .planes {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 760px) {
+    .planes {
+      /* Una columna por plan, sin importar cuántos haya */
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+    }
+  }
+
+  .plan {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem;
+    border: 1.5px dashed rgb(201 184 248 / 0.28);
+    border-radius: var(--radio-lg);
+    background: var(--c-superficie);
+  }
+
+  .plan__nombre {
+    font-family: var(--f-titulos);
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .plan__precio {
+    font-family: var(--f-titulos);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .plan__desc {
+    color: var(--c-texto-oscuro-2);
+  }
+
+  .plan__incluye {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--c-borde-oscuro);
+  }
+
+  .plan__incluye li {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .plan__incluye :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+    color: var(--c-violeta-claro);
+  }
+
+  .sus__pie {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  /* Bloque que reemplaza a las tarjetas mientras no haya planes cargados */
+  .sus__medida {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem 2.5rem;
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+    border: 1px solid var(--c-borde-oscuro);
+    border-radius: var(--radio-lg);
+    background: linear-gradient(120deg, rgb(108 79 214 / 0.16), transparent 60%), var(--c-superficie);
+  }
+
+  .sus__medida-texto {
+    flex: 1 1 22rem;
+    max-width: 44rem;
+    color: var(--c-blanco);
+    font-family: var(--f-titulos);
+    font-size: var(--fs-h3);
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+  }
+
+  .sus__condiciones {
+    max-width: 40rem;
+    color: var(--c-texto-oscuro-2);
+    font-size: var(--fs-sm);
+  }
+</style>

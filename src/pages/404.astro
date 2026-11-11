@@ -1,0 +1,62 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import logo from '../assets/brand/covva-logo.png';
+---
+
+<Base titulo="Página no encontrada — Covva" indexar={false}>
+  <main id="contenido" class="error zona-oscura">
+    <div class="contenedor error__contenido">
+      <a href="/" class="error__logo" aria-label="Covva, ir al inicio">
+        <Image src={logo} alt="" width={120} height={64} densities={[1, 2]} />
+      </a>
+      <p class="error__codigo">Error 404</p>
+      <h1 class="error__titulo">Esta página no existe</h1>
+      <p class="error__texto">Puede que el enlace esté mal escrito o que la página se haya movido.</p>
+      <a href="/" class="boton boton--primario">Volver al inicio</a>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .error {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    padding-block: 4rem;
+    text-align: center;
+  }
+
+  .error__contenido {
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+  }
+
+  .error__logo {
+    margin-bottom: 1.5rem;
+    border-radius: var(--radio-sm);
+  }
+
+  .error__logo img {
+    width: 120px;
+    height: auto;
+    mix-blend-mode: lighten;
+  }
+
+  .error__codigo {
+    color: var(--c-lila);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+
+  .error__titulo {
+    font-size: var(--fs-h2);
+  }
+
+  .error__texto {
+    max-width: 28rem;
+    margin-bottom: 1rem;
+    color: var(--c-texto-oscuro-2);
+  }
+</style>

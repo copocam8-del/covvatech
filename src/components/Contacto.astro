@@ -1,0 +1,510 @@
+---
+import EncabezadoSeccion from './EncabezadoSeccion.astro';
+import Icono from './Icono.astro';
+import { sitio, canales, formularioListo } from '../config/sitio';
+import { servicios } from '../data/servicios';
+
+const listaCanales = [
+  { ...canales.whatsapp, icono: 'whatsapp' as const, externo: true },
+  { ...canales.instagram, icono: 'instagram' as const, externo: true },
+  { ...canales.correo, icono: 'correo' as const, externo: false },
+];
+---
+
+<section id="contacto" class="seccion contacto" aria-labelledby="contacto-titulo">
+  <div class="contenedor contacto__grilla">
+    <div class="contacto__lateral">
+      <EncabezadoSeccion etiqueta="Contacto" titulo="Contanos qué tenés en mente" id="contacto-titulo">
+        Completá el formulario con algunos datos de tu proyecto y te respondemos para conversarlo.
+        Si preferís, escribinos directo.
+      </EncabezadoSeccion>
+
+      <ul role="list" class="canales" data-revelar>
+        {
+          listaCanales.map((canal) => (
+            <li>
+              {canal.href ? (
+                <a
+                  class="canal"
+                  href={canal.href}
+                  {...(canal.externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                >
+                  <span class="canal__icono"><Icono nombre={canal.icono} /></span>
+                  <span class="canal__textos">
+                    <span class="canal__etiqueta">{canal.etiqueta}</span>
+                    <span class="canal__valor">{canal.texto}</span>
+                  </span>
+                  {canal.externo && <span class="sr-only">(se abre en una pestaña nueva)</span>}
+                </a>
+              ) : (
+                <div class="canal canal--pendiente">
+                  <span class="canal__icono"><Icono nombre={canal.icono} /></span>
+                  <span class="canal__textos">
+                    <span class="canal__etiqueta">{canal.etiqueta}</span>
+                    <span class="pendiente">{canal.texto}</span>
+                  </span>
+                </div>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="form-tarjeta" data-revelar>
+      <form
+        class="form"
+        action={formularioListo ? sitio.formulario.endpoint : undefined}
+        method="POST"
+        novalidate
+        data-form-contacto
+        data-listo={formularioListo ? 'true' : 'false'}
+        aria-describedby="form-nota"
+      >
+        {
+          !formularioListo && (
+            <p class="form__aviso">
+              <span class="pendiente">[Pendiente: endpoint de Formspree en src/config/sitio.ts]</span>
+              <span>Mientras tanto, el formulario no envía mensajes.</span>
+            </p>
+          )
+        }
+
+        <input type="hidden" name="_subject" value={sitio.formulario.asunto} />
+        <!-- Campo trampa para bots: las personas no lo ven ni lo completan -->
+        <div class="form__trampa" aria-hidden="true">
+          <label for="f-gotcha">No completar</label>
+          <input type="text" id="f-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="campo">
+          <label for="f-nombre" class="campo__etiqueta">Nombre</label>
+          <input
+            id="f-nombre"
+            name="nombre"
+            type="text"
+            autocomplete="name"
+            required
+            minlength="2"
+            maxlength="80"
+            aria-describedby="f-nombre-error"
+            class="campo__control"
+          />
+          <p id="f-nombre-error" class="campo__error" data-error hidden></p>
+        </div>
+
+        <div class="campo">
+          <label for="f-correo" class="campo__etiqueta">Correo electrónico</label>
+          <input
+            id="f-correo"
+            name="email"
+            type="email"
+            inputmode="email"
+            autocomplete="email"
+            required
+            maxlength="120"
+            aria-describedby="f-correo-ayuda f-correo-error"
+            class="campo__control"
+          />
+          <p id="f-correo-ayuda" class="campo__ayuda">Lo usamos solo para responderte.</p>
+          <p id="f-correo-error" class="campo__error" data-error hidden></p>
+        </div>
+
+        <div class="campo">
+          <label for="f-servicio" class="campo__etiqueta">Tipo de servicio</label>
+          <div class="campo__select">
+            <select id="f-servicio" name="servicio" required aria-describedby="f-servicio-error" class="campo__control">
+              <option value="" selected disabled>Elegí una opción</option>
+              {servicios.map((s) => <option value={s.nombre} data-id={s.id}>{s.nombre}</option>)}
+              <option value="Todavía no lo sé">Todavía no lo sé</option>
+            </select>
+            <Icono nombre="chevron" tamano={18} class="campo__flecha" />
+          </div>
+          <p id="f-servicio-error" class="campo__error" data-error hidden></p>
+        </div>
+
+        <div class="campo">
+          <div class="campo__fila">
+            <label for="f-mensaje" class="campo__etiqueta">Contanos sobre tu proyecto</label>
+            <span class="campo__contador" data-contador aria-hidden="true">0 / 2000</span>
+          </div>
+          <textarea
+            id="f-mensaje"
+            name="mensaje"
+            rows="5"
+            required
+            minlength="20"
+            maxlength="2000"
+            aria-describedby="f-mensaje-ayuda f-mensaje-error"
+            class="campo__control"></textarea>
+          <p id="f-mensaje-ayuda" class="campo__ayuda">
+            Qué necesitás, para qué tipo de negocio y, si lo tenés, algún plazo o referencia.
+          </p>
+          <p id="f-mensaje-error" class="campo__error" data-error hidden></p>
+        </div>
+
+        <div class="form__pie">
+          <button type="submit" class="boton boton--primario form__enviar" data-enviar>
+            <span class="form__spinner" aria-hidden="true"></span>
+            <span data-enviar-texto>Enviar consulta</span>
+          </button>
+          <p id="form-nota" class="form__nota">Todos los campos son obligatorios.</p>
+        </div>
+
+        <div class="form__estado form__estado--error" role="alert" data-estado-error hidden>
+          <Icono nombre="alerta" />
+          <p data-estado-error-texto></p>
+        </div>
+      </form>
+
+      <div class="form__exito" data-estado-exito tabindex="-1" hidden>
+        <span class="form__exito-icono"><Icono nombre="enviado" tamano={32} /></span>
+        <p class="form__exito-titulo">¡Gracias! Recibimos tu consulta.</p>
+        <p class="form__exito-texto">
+          Vamos a leerla con atención y te respondemos al correo que nos dejaste.
+        </p>
+        <button type="button" class="boton boton--secundario boton--chico" data-otra-consulta>
+          Enviar otra consulta
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contacto {
+    background: var(--c-fondo-alt);
+  }
+
+  .contacto__grilla {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 960px) {
+    .contacto__grilla {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+
+  .contacto__lateral :global(.encabezado) {
+    margin-bottom: 2rem;
+  }
+
+  /* ---------- Canales directos ---------- */
+  .canales {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .canal {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--c-borde);
+    border-radius: var(--radio);
+    background: var(--c-blanco);
+    text-decoration: none;
+    transition:
+      border-color var(--t-rapido) ease,
+      transform var(--t-rapido) var(--ease);
+  }
+
+  a.canal:hover {
+    border-color: var(--c-violeta);
+    transform: translateX(3px);
+  }
+
+  .canal__icono {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--c-lila-tenue);
+    color: var(--c-violeta);
+  }
+
+  .canal__textos {
+    display: grid;
+    gap: 0.15rem;
+    min-width: 0;
+    justify-items: start;
+  }
+
+  .canal__etiqueta {
+    color: var(--c-texto-2);
+    font-size: var(--fs-sm);
+  }
+
+  .canal__valor {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  /* ---------- Formulario ---------- */
+  .form-tarjeta {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 1px solid var(--c-borde);
+    border-radius: var(--radio-lg);
+    background: var(--c-blanco);
+    box-shadow: var(--sombra-tarjeta);
+  }
+
+  .form {
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  .form[hidden] {
+    display: none;
+  }
+
+  .form__aviso {
+    display: grid;
+    gap: 0.4rem;
+    justify-items: start;
+    padding: 0.9rem 1rem;
+    border-radius: var(--radio);
+    background: #fff8ee;
+    color: #6b3410;
+    font-size: var(--fs-sm);
+  }
+
+  .form__trampa {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .campo {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .campo__fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  .campo__etiqueta {
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+
+  .campo__control {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 0.95rem;
+    border: 1px solid #8d87a3; /* 3,4:1 sobre blanco: el campo se distingue bien */
+    border-radius: var(--radio-sm);
+    background: var(--c-blanco);
+    color: var(--c-texto);
+    font-size: 1rem; /* 16px: evita el zoom automático en iPhone */
+    line-height: 1.5;
+    transition:
+      border-color var(--t-rapido) ease,
+      box-shadow var(--t-rapido) ease;
+  }
+
+  textarea.campo__control {
+    resize: vertical;
+    min-height: 8.5rem;
+  }
+
+  .campo__control:hover {
+    border-color: var(--c-texto-2);
+  }
+
+  .campo__control:focus-visible {
+    outline: none;
+    border-color: var(--c-violeta);
+    box-shadow: 0 0 0 3px rgb(108 79 214 / 0.22);
+    border-radius: var(--radio-sm);
+  }
+
+  .campo__control[aria-invalid='true'] {
+    border-color: #c0362c;
+  }
+
+  .campo__control[aria-invalid='true']:focus-visible {
+    box-shadow: 0 0 0 3px rgb(192 54 44 / 0.2);
+  }
+
+  .campo__select {
+    position: relative;
+  }
+
+  .campo__select select {
+    appearance: none;
+    padding-right: 2.75rem;
+    cursor: pointer;
+  }
+
+  .campo__select select:invalid {
+    color: var(--c-texto-2);
+  }
+
+  .campo__select :global(.campo__flecha) {
+    position: absolute;
+    right: 0.95rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--c-texto-2);
+    pointer-events: none;
+  }
+
+  .campo__ayuda,
+  .campo__contador,
+  .form__nota {
+    color: var(--c-texto-2);
+    font-size: var(--fs-sm);
+  }
+
+  .campo__contador {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .campo__error {
+    display: flex;
+    gap: 0.4rem;
+    align-items: flex-start;
+    color: #b0302a;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+  }
+
+  .campo__error[hidden] {
+    display: none;
+  }
+
+  .campo__error::before {
+    content: '!';
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 1.05rem;
+    height: 1.05rem;
+    margin-top: 0.1rem;
+    border-radius: 50%;
+    background: #b0302a;
+    color: var(--c-blanco);
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .form__pie {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .form__enviar {
+    min-width: 12rem;
+  }
+
+  @media (max-width: 479.98px) {
+    .form__enviar {
+      width: 100%;
+    }
+  }
+
+  .form__enviar[aria-busy='true'] {
+    opacity: 0.85;
+    cursor: progress;
+  }
+
+  .form__spinner {
+    display: none;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid rgb(255 255 255 / 0.35);
+    border-top-color: var(--c-blanco);
+    border-radius: 50%;
+    animation: girar 0.8s linear infinite;
+  }
+
+  .form__enviar[aria-busy='true'] .form__spinner {
+    display: inline-block;
+  }
+
+  @keyframes girar {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .form__estado {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 1rem;
+    border-radius: var(--radio);
+    font-size: 0.9375rem;
+  }
+
+  .form__estado[hidden] {
+    display: none;
+  }
+
+  .form__estado--error {
+    background: #fdf0ef;
+    color: #8e2620;
+  }
+
+  .form__estado :global(svg) {
+    flex-shrink: 0;
+  }
+
+  .form__exito {
+    display: grid;
+    justify-items: start;
+    gap: 0.75rem;
+    padding-block: 1rem;
+  }
+
+  .form__exito[hidden] {
+    display: none;
+  }
+
+  .form__exito:focus {
+    outline: none;
+  }
+
+  .form__exito-icono {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 0.5rem;
+    border-radius: 50%;
+    background: var(--c-lila-tenue);
+    color: var(--c-violeta);
+  }
+
+  .form__exito-titulo {
+    font-family: var(--f-titulos);
+    font-size: var(--fs-h3);
+    font-weight: 600;
+  }
+
+  .form__exito-texto {
+    margin-bottom: 0.75rem;
+    color: var(--c-texto-2);
+  }
+</style>
+
+<script>
+  import { iniciarContacto } from '../scripts/contacto';
+  iniciarContacto();
+</script>

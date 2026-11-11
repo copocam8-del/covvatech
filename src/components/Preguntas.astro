@@ -1,0 +1,171 @@
+---
+import EncabezadoSeccion from './EncabezadoSeccion.astro';
+import Icono from './Icono.astro';
+import Texto from './Texto.astro';
+import { preguntas } from '../data/faq';
+---
+
+<section id="preguntas" class="seccion preguntas" aria-labelledby="preguntas-titulo">
+  <div class="contenedor faq">
+    <div class="faq__lateral">
+      <EncabezadoSeccion etiqueta="Preguntas frecuentes" titulo="Lo que suelen preguntarnos" id="preguntas-titulo" />
+      <div class="faq__otra" data-revelar>
+        <p class="faq__otra-titulo">¿Tenés otra pregunta?</p>
+        <p class="faq__otra-texto">Escribinos y te respondemos personalmente.</p>
+        <a href="#contacto" class="boton boton--secundario boton--chico">Ir a contacto</a>
+      </div>
+    </div>
+
+    <div class="faq__lista" data-revelar>
+      {
+        preguntas.map((p, i) => (
+          <details class="faq__item" name="preguntas" open={i === 0}>
+            <summary class="faq__pregunta">
+              <span>{p.pregunta}</span>
+              <span class="faq__icono" aria-hidden="true">
+                <Icono nombre="chevron" tamano={20} />
+              </span>
+            </summary>
+            <div class="faq__respuesta">
+              {p.respuesta.map((parrafo) => (
+                <p>
+                  <Texto texto={parrafo} />
+                </p>
+              ))}
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .preguntas {
+    background: var(--c-blanco);
+  }
+
+  .faq {
+    display: grid;
+    gap: 0 4rem;
+  }
+
+  @media (min-width: 960px) {
+    .faq {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+      align-items: start;
+    }
+
+    .faq__lateral {
+      position: sticky;
+      top: calc(var(--nav-alto-compacto) + 2rem);
+    }
+  }
+
+  .faq__otra {
+    display: none;
+    padding: 1.5rem;
+    border-radius: var(--radio-lg);
+    background: var(--c-fondo-alt);
+    border: 1px solid var(--c-borde);
+  }
+
+  @media (min-width: 960px) {
+    .faq__otra {
+      display: block;
+    }
+  }
+
+  .faq__otra-titulo {
+    font-family: var(--f-titulos);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .faq__otra-texto {
+    margin-bottom: 1.1rem;
+    color: var(--c-texto-2);
+    font-size: 0.9375rem;
+  }
+
+  .faq__lista {
+    border-top: 1px solid var(--c-borde);
+  }
+
+  .faq__item {
+    border-bottom: 1px solid var(--c-borde);
+  }
+
+  .faq__pregunta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.35rem 0;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--f-titulos);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.35;
+    transition: color var(--t-rapido) ease;
+  }
+
+  .faq__pregunta::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__pregunta:hover {
+    color: var(--c-violeta);
+  }
+
+  .faq__pregunta:focus-visible {
+    border-radius: var(--radio-sm);
+  }
+
+  .faq__icono {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--c-fondo-alt);
+    color: var(--c-texto-2);
+    transition:
+      transform var(--t-medio) var(--ease),
+      background-color var(--t-rapido) ease,
+      color var(--t-rapido) ease;
+  }
+
+  .faq__item[open] .faq__icono {
+    transform: rotate(180deg);
+    background: var(--c-violeta);
+    color: var(--c-blanco);
+  }
+
+  .faq__respuesta {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 44rem;
+    padding: 0 3.5rem 1.5rem 0;
+    color: var(--c-texto-2);
+  }
+
+  .faq__item[open] .faq__respuesta {
+    animation: faq-abrir var(--t-medio) var(--ease);
+  }
+
+  @keyframes faq-abrir {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+
+  @media (max-width: 559.98px) {
+    .faq__respuesta {
+      padding-right: 0;
+    }
+  }
+</style>

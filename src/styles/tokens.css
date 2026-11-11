@@ -1,0 +1,62 @@
+/* ==========================================================================
+   Tokens de diseño de Covva
+   Todos los colores, tipografías, espacios y tiempos se definen acá.
+   ========================================================================== */
+
+:root {
+  /* --- Claros (la mayor parte del sitio) --- */
+  --c-blanco: #ffffff;
+  --c-fondo-alt: #f7f6fb;
+  --c-lila-tenue: #efeafd;
+  --c-borde: #e4e1ee;
+  --c-texto: #1a1726;
+  --c-texto-2: #5b5670;
+
+  /* --- Acento --- */
+  --c-violeta: #6c4fd6;
+  --c-violeta-hover: #5a3fc0; /* hover sobre fondo claro */
+  --c-violeta-claro: #8467e8; /* detalles y foco sobre fondo oscuro */
+  --c-violeta-hover-oscuro: #7a5ce2; /* hover de botones en zonas oscuras (4,7:1 con blanco) */
+  --c-lila: #c9b8f8;
+
+  /* --- Oscuros (solo navbar, hero, suscripción y footer) --- */
+  --c-negro: #08070d;
+  --c-superficie: #12101c;
+  --c-borde-oscuro: #262238;
+  --c-texto-oscuro-2: #a7a1bd;
+
+  /* --- Tipografía --- */
+  --f-titulos: 'Sora Variable', 'Sora', system-ui, sans-serif;
+  --f-texto: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: clamp(1.125rem, 1rem + 0.5vw, 1.3125rem);
+  --fs-h3: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --fs-h2: clamp(1.75rem, 1.3rem + 2vw, 2.75rem);
+  --fs-h1: clamp(2.375rem, 1.6rem + 3.6vw, 4.25rem);
+
+  /* --- Espacios y medidas --- */
+  --ancho-max: 1200px;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --sec-padding: clamp(4.5rem, 10vw, 7.5rem);
+  --nav-alto: 76px;
+  --nav-alto-compacto: 64px;
+
+  --radio-sm: 8px;
+  --radio: 14px;
+  --radio-lg: 22px;
+  --radio-pill: 999px;
+
+  /* --- Movimiento --- */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-rapido: 160ms;
+  --t-medio: 320ms;
+
+  /* --- Foco --- */
+  --foco: 0 0 0 3px var(--c-blanco), 0 0 0 5px var(--c-violeta);
+  --foco-oscuro: 0 0 0 3px var(--c-negro), 0 0 0 5px var(--c-violeta-claro);
+
+  --sombra-tarjeta: 0 1px 2px rgb(26 23 38 / 0.04), 0 8px 24px rgb(26 23 38 / 0.06);
+}

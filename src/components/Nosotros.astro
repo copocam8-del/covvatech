@@ -1,0 +1,327 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import EncabezadoSeccion from './EncabezadoSeccion.astro';
+import Icono from './Icono.astro';
+import { valores, fundadora } from '../data/nosotros';
+import { hayFundadora, equipoReal, hayEquipo } from '../data/visibilidad';
+import { tieneDato } from '../config/sitio';
+
+interface Props {
+  /** Fondo gris claro en lugar de blanco (para alternar con las secciones vecinas) */
+  alterno?: boolean;
+}
+const { alterno = false } = Astro.props;
+
+const archivos = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/equipo/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true },
+);
+const fotos = new Map(
+  Object.entries(archivos).map(([ruta, mod]) => [ruta.split('/').pop()!, mod.default]),
+);
+const fotoDe = (archivo: string) => (tieneDato(archivo) ? fotos.get(archivo) : undefined);
+const fotoFundadora = fotoDe(fundadora.foto);
+
+// Los bloques de personas solo se muestran con datos reales (ver src/data/visibilidad.ts)
+const hayPersonas = hayFundadora || hayEquipo;
+---
+
+<section
+  id="nosotros"
+  class:list={['seccion', 'nosotros', { 'nosotros--alterno': alterno }]}
+  aria-labelledby="nosotros-titulo"
+>
+  <div class="contenedor">
+    <div class="nos__intro">
+      <EncabezadoSeccion etiqueta="Nosotros" titulo="Tecnología con personas que se hacen cargo" id="nosotros-titulo" />
+      <div class="nos__texto" data-revelar>
+        <p>
+          En Covva diseñamos y desarrollamos soluciones web para emprendedores, profesionales,
+          comercios y empresas que quieren una presencia digital seria, sin tener que resolver
+          solos la parte técnica.
+        </p>
+        <p>
+          Nos involucramos desde la primera conversación: entendemos qué necesitás, te proponemos
+          un camino claro y seguimos presentes después del lanzamiento.
+        </p>
+      </div>
+    </div>
+
+    <ul role="list" class:list={['nos__valores', { 'nos__valores--final': !hayPersonas }]} data-revelar>
+      {
+        valores.map((v) => (
+          <li class="valor">
+            <span class="valor__icono">
+              <Icono nombre={v.icono} />
+            </span>
+            <h3 class="valor__titulo">{v.titulo}</h3>
+            <p class="valor__texto">{v.texto}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      hayPersonas && (
+        <div class:list={['nos__personas', { 'nos__personas--doble': hayFundadora && hayEquipo }]}>
+          {hayFundadora && (
+            <article class="fundadora" aria-labelledby="fundadora-nombre" data-revelar>
+              <div class="foto foto--grande">
+                {fotoFundadora ? (
+                  <Image src={fotoFundadora} alt={`Foto de ${fundadora.nombre}`} widths={[240, 480]} sizes="240px" />
+                ) : (
+                  <Icono nombre="persona" tamano={40} />
+                )}
+              </div>
+              <div class="fundadora__info">
+                <p class="fundadora__etiqueta">Fundadora</p>
+                <h3 id="fundadora-nombre" class="fundadora__nombre">{fundadora.nombre}</h3>
+                {tieneDato(fundadora.rol) && <p class="fundadora__rol">{fundadora.rol}</p>}
+                {tieneDato(fundadora.bio) && <p class="fundadora__bio">{fundadora.bio}</p>}
+              </div>
+            </article>
+          )}
+
+          {hayEquipo && (
+            <div class="equipo" data-revelar>
+              <h3 class="equipo__titulo">Equipo</h3>
+              <ul role="list" class="equipo__lista">
+                {equipoReal.map((m) => {
+                  const foto = fotoDe(m.foto);
+                  return (
+                    <li class="miembro">
+                      <div class="foto">
+                        {foto ? (
+                          <Image src={foto} alt={`Foto de ${m.nombre}`} widths={[96, 192]} sizes="96px" />
+                        ) : (
+                          <Icono nombre="persona" tamano={26} />
+                        )}
+                      </div>
+                      <div>
+                        <p class="miembro__nombre">{m.nombre}</p>
+                        {tieneDato(m.rol) && <p class="miembro__rol">{m.rol}</p>}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .nosotros {
+    background: var(--c-blanco);
+  }
+
+  .nosotros--alterno {
+    background: var(--c-fondo-alt);
+  }
+
+  .nos__intro {
+    display: grid;
+    gap: 0 4rem;
+    margin-bottom: clamp(2.5rem, 6vw, 3.5rem);
+  }
+
+  .nos__intro :global(.encabezado) {
+    margin-bottom: 1.5rem;
+  }
+
+  .nos__texto {
+    display: grid;
+    gap: 1rem;
+    color: var(--c-texto-2);
+    font-size: var(--fs-lg);
+  }
+
+  @media (min-width: 960px) {
+    .nos__intro {
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+    }
+
+    .nos__intro :global(.encabezado) {
+      margin-bottom: 0;
+    }
+  }
+
+  /* ---------- Valores ---------- */
+  .nos__valores {
+    display: grid;
+    gap: 1px;
+    background: var(--c-borde);
+    border: 1px solid var(--c-borde);
+    border-radius: var(--radio-lg);
+    overflow: hidden;
+    margin-bottom: clamp(3rem, 7vw, 4.5rem);
+  }
+
+  .nos__valores--final {
+    margin-bottom: 0;
+  }
+
+  @media (min-width: 640px) {
+    .nos__valores {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .valor:last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .nos__valores {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .valor:last-child {
+      grid-column: auto;
+    }
+  }
+
+  .valor {
+    padding: 1.75rem 1.5rem;
+    background: var(--c-blanco);
+    transition: background-color var(--t-medio) ease;
+  }
+
+  .valor:hover {
+    background: var(--c-fondo-alt);
+  }
+
+  .valor__icono {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 1.25rem;
+    border-radius: 12px;
+    background: var(--c-lila-tenue);
+    color: var(--c-violeta);
+  }
+
+  .valor__titulo {
+    margin-bottom: 0.5rem;
+    font-size: 1.0625rem;
+  }
+
+  .valor__texto {
+    color: var(--c-texto-2);
+    font-size: 0.9375rem;
+  }
+
+  /* ---------- Personas ---------- */
+  .nos__personas {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 960px) {
+    .nos__personas:not(.nos__personas--doble) > * {
+      max-width: 48rem;
+    }
+
+    .nos__personas--doble {
+      grid-template-columns: 1.35fr 1fr;
+    }
+  }
+
+  .fundadora,
+  .equipo {
+    padding: clamp(1.5rem, 4vw, 2.25rem);
+    border: 1px solid var(--c-borde);
+    border-radius: var(--radio-lg);
+    background: var(--c-fondo-alt);
+  }
+
+  .fundadora {
+    display: grid;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  @media (min-width: 560px) {
+    .fundadora {
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+    }
+  }
+
+  .foto {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--c-lila-tenue);
+    color: #7f6fc9;
+  }
+
+  .foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .foto--grande {
+    width: 140px;
+    height: 140px;
+    border-radius: var(--radio-lg);
+  }
+
+  .fundadora__etiqueta {
+    margin-bottom: 0.5rem;
+    color: var(--c-violeta);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+
+  .fundadora__nombre {
+    margin-bottom: 0.4rem;
+    font-size: var(--fs-h3);
+  }
+
+  .fundadora__rol {
+    margin-bottom: 1rem;
+    color: var(--c-texto-2);
+  }
+
+  .fundadora__bio {
+    color: var(--c-texto);
+  }
+
+  .equipo__titulo {
+    margin-bottom: 1.25rem;
+    font-size: 1.0625rem;
+  }
+
+  .equipo__lista {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .miembro {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .miembro__nombre {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .miembro__rol {
+    color: var(--c-texto-2);
+    font-size: var(--fs-sm);
+  }
+</style>

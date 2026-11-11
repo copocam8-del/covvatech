@@ -1,0 +1,18 @@
+{
+  "name": "covva-web",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sitio institucional de Covva",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/verificar-pendientes.mjs",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/sora": "^5.3.0",
+    "astro": "^7.4.10"
+  }
+}

@@ -1,0 +1,20 @@
+# Dependencias
+node_modules/
+
+# Sitio generado y caché de Astro
+dist/
+.astro/
+
+# Variables de entorno (por si en el futuro se usan)
+.env
+.env.*
+
+# Registros
+npm-debug.log*
+*.log
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

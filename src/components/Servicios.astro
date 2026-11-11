@@ -1,0 +1,343 @@
+---
+import EncabezadoSeccion from './EncabezadoSeccion.astro';
+import Icono from './Icono.astro';
+import { servicios } from '../data/servicios';
+---
+
+<section id="servicios" class="seccion servicios" aria-labelledby="servicios-titulo">
+  <div class="contenedor">
+    <EncabezadoSeccion etiqueta="Servicios" titulo="Qué podemos hacer por tu proyecto" id="servicios-titulo">
+      Cinco formas de trabajar con nosotros. Elegí una para ver el detalle o consultanos si
+      todavía no sabés cuál te conviene.
+    </EncabezadoSeccion>
+
+    <div class="serv" data-servicios data-revelar>
+      {
+        servicios.map((s, i) => (
+          <>
+            <h3 class="serv__cab">
+              <button
+                type="button"
+                class="serv__boton"
+                id={`serv-boton-${s.id}`}
+                aria-controls={`serv-panel-${s.id}`}
+                aria-expanded={i === 0 ? 'true' : 'false'}
+                data-serv-boton
+              >
+                <span class="serv__icono">
+                  <Icono nombre={s.icono} />
+                </span>
+                <span class="serv__textos">
+                  <span class="serv__nombre">{s.nombre}</span>
+                  <span class="serv__resumen">{s.resumen}</span>
+                </span>
+                <Icono nombre="chevron" class="serv__chevron" tamano={20} />
+              </button>
+            </h3>
+
+            <div
+              class="serv__panel"
+              id={`serv-panel-${s.id}`}
+              role="region"
+              aria-labelledby={`serv-boton-${s.id}`}
+              data-serv-panel
+            >
+              <div class="serv__panel-int">
+                <div class="serv__panel-cab">
+                  <span class="serv__icono serv__icono--grande">
+                    <Icono nombre={s.icono} tamano={28} />
+                  </span>
+                  <p class="serv__panel-nombre">{s.nombre}</p>
+                </div>
+
+                <p class="serv__descripcion">{s.descripcion}</p>
+
+                <div class="serv__detalle">
+                  <div>
+                    <p class="serv__subtitulo">Puede incluir</p>
+                    <ul role="list" class="serv__lista">
+                      {s.incluye.map((item) => (
+                        <li>
+                          <Icono nombre="check" tamano={18} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <p class="serv__subtitulo">Pensado para</p>
+                    <p class="serv__para">{s.paraQuien}</p>
+                  </div>
+                </div>
+
+                <a href="#contacto" class="boton boton--primario serv__cta" data-consultar-servicio={s.id}>
+                  Consultar por este servicio
+                  <Icono nombre="flecha" />
+                </a>
+              </div>
+            </div>
+          </>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .servicios {
+    background: var(--c-blanco);
+  }
+
+  /* ---------- Móvil: acordeón ---------- */
+  .serv {
+    display: grid;
+    /* minmax(0, …) evita que un nombre largo ensanche la columna en pantallas de 320 px */
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+
+  .serv__cab {
+    font: inherit;
+    letter-spacing: normal;
+  }
+
+  .serv__boton {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem 1.1rem;
+    text-align: left;
+    background: var(--c-blanco);
+    border: 1px solid var(--c-borde);
+    border-radius: var(--radio);
+    transition:
+      border-color var(--t-rapido) ease,
+      background-color var(--t-rapido) ease,
+      box-shadow var(--t-rapido) ease;
+  }
+
+  .serv__boton:hover {
+    border-color: #cfc6ee;
+  }
+
+  .serv__boton[aria-expanded='true'] {
+    border-color: var(--c-violeta);
+    box-shadow: 0 0 0 1px var(--c-violeta);
+  }
+
+  .serv__icono {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--c-lila-tenue);
+    color: var(--c-violeta);
+    transition:
+      background-color var(--t-rapido) ease,
+      color var(--t-rapido) ease;
+  }
+
+  .serv__boton[aria-expanded='true'] .serv__icono {
+    background: var(--c-violeta);
+    color: var(--c-blanco);
+  }
+
+  .serv__textos {
+    display: grid;
+    gap: 0.15rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .serv__nombre {
+    font-family: var(--f-titulos);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--c-texto);
+    overflow-wrap: anywhere;
+  }
+
+  .serv__resumen {
+    color: var(--c-texto-2);
+    font-size: var(--fs-sm);
+  }
+
+  .serv__boton :global(.serv__chevron) {
+    flex-shrink: 0;
+    color: var(--c-texto-2);
+    transition: transform var(--t-medio) var(--ease);
+  }
+
+  .serv__boton[aria-expanded='true'] :global(.serv__chevron) {
+    transform: rotate(180deg);
+    color: var(--c-violeta);
+  }
+
+  .serv__panel[hidden] {
+    display: none;
+  }
+
+  .serv__panel-int {
+    padding: 1.5rem 1.25rem 1.75rem;
+    margin-top: -0.25rem;
+    background: var(--c-fondo-alt);
+    border-radius: 0 0 var(--radio) var(--radio);
+  }
+
+  .serv__panel-cab {
+    display: none;
+  }
+
+  .serv__descripcion {
+    color: var(--c-texto);
+    font-size: var(--fs-md);
+  }
+
+  .serv__detalle {
+    display: grid;
+    gap: 1.5rem;
+    margin-block: 1.5rem 1.75rem;
+  }
+
+  .serv__subtitulo {
+    margin-bottom: 0.75rem;
+    color: var(--c-texto-2);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .serv__lista {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .serv__lista li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+
+  .serv__lista :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+    color: var(--c-violeta);
+  }
+
+  .serv__para {
+    color: var(--c-texto);
+  }
+
+  .serv__cta {
+    width: 100%;
+  }
+
+  /* Animación suave al abrir un panel */
+  .serv__panel:not([hidden]) .serv__panel-int {
+    animation: serv-abrir var(--t-medio) var(--ease);
+  }
+
+  @keyframes serv-abrir {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+
+  /* ---------- Escritorio: lista a la izquierda, detalle a la derecha ---------- */
+  @media (min-width: 960px) {
+    :global(.js) .serv {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      /* 5 filas para los botones + 1 flexible que absorbe el alto extra del panel,
+         así los botones quedan juntos aunque el detalle sea más alto. */
+      grid-template-rows: repeat(5, auto) 1fr;
+      column-gap: 2.5rem;
+      row-gap: 0.75rem;
+      align-items: start;
+    }
+
+    :global(.js) .serv__cab {
+      grid-column: 1;
+    }
+
+    :global(.js) .serv__panel {
+      grid-column: 2;
+      grid-row: 1 / -1;
+      align-self: stretch;
+    }
+
+    :global(.js) .serv__boton :global(.serv__chevron) {
+      transform: rotate(-90deg);
+    }
+
+    :global(.js) .serv__boton[aria-expanded='true'] {
+      background: var(--c-fondo-alt);
+    }
+
+    :global(.js) .serv__panel-int {
+      height: 100%;
+      margin: 0;
+      padding: 2.75rem;
+      border: 1px solid var(--c-borde);
+      border-radius: var(--radio-lg);
+      background:
+        radial-gradient(circle at 100% 0%, var(--c-lila-tenue), transparent 45%),
+        var(--c-fondo-alt);
+      display: flex;
+      flex-direction: column;
+    }
+
+    :global(.js) .serv__panel-cab {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .serv__icono--grande {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: var(--c-violeta);
+      color: var(--c-blanco);
+    }
+
+    .serv__panel-nombre {
+      font-family: var(--f-titulos);
+      font-size: var(--fs-h3);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .serv__detalle {
+      grid-template-columns: 1.4fr 1fr;
+      gap: 2rem;
+      margin-block: 2rem auto;
+      padding-bottom: 2rem;
+    }
+
+    .serv__cta {
+      width: auto;
+      align-self: flex-start;
+    }
+
+    :global(.js) .serv__panel:not([hidden]) .serv__panel-int {
+      animation-name: serv-cambiar;
+    }
+
+    @keyframes serv-cambiar {
+      from {
+        opacity: 0;
+        transform: translateX(8px);
+      }
+    }
+  }
+</style>
+
+<script>
+  import { iniciarServicios } from '../scripts/servicios';
+  iniciarServicios();
+</script>
