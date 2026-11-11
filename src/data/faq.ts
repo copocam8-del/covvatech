@@ -2,6 +2,8 @@
  * Preguntas frecuentes. Cada respuesta puede tener varios párrafos.
  * Cualquier "[Pendiente: …]" se muestra resaltado automáticamente.
  */
+import { precioDesde } from './suscripcion';
+
 export const preguntas: { pregunta: string; respuesta: string[] }[] = [
   {
     pregunta: '¿Qué tipo de páginas desarrollan?',
@@ -20,6 +22,7 @@ export const preguntas: { pregunta: string; respuesta: string[] }[] = [
     pregunta: '¿Cómo funciona la suscripción?',
     respuesta: [
       'En lugar de pagar todo el desarrollo de una sola vez, abonás una cuota mensual. Lo que incluye esa cuota depende del plan que elijas.',
+      `Los planes parten desde ${precioDesde} por mes; el valor final depende del alcance de cada proyecto.`,
       'En la propuesta te detallamos qué está contemplado y qué no, para que sepas exactamente qué contratás.',
     ],
   },

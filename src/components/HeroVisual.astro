@@ -203,7 +203,7 @@ const giro = 'rotate(-14 300 280)';
       0 0 0 1px rgb(255 255 255 / 0.06),
       0 3cqi 8cqi rgb(0 0 0 / 0.45);
     overflow: hidden;
-    animation-delay: 0.15s;
+    animation-delay: calc(var(--retraso-intro, 0s) + 0.15s);
   }
 
   .v-sitio__barra {
@@ -319,7 +319,7 @@ const giro = 'rotate(-14 300 280)';
     box-shadow:
       0 0 0 1px rgb(255 255 255 / 0.06),
       0 3cqi 8cqi rgb(0 0 0 / 0.5);
-    animation-delay: 0.35s;
+    animation-delay: calc(var(--retraso-intro, 0s) + 0.35s);
   }
 
   .v-tienda__img {
@@ -374,7 +374,7 @@ const giro = 'rotate(-14 300 280)';
     background: var(--c-superficie);
     border: 1px solid var(--c-borde-oscuro);
     box-shadow: 0 3cqi 8cqi rgb(0 0 0 / 0.5);
-    animation-delay: 0.55s;
+    animation-delay: calc(var(--retraso-intro, 0s) + 0.55s);
   }
 
   .v-l--claro {
@@ -408,7 +408,7 @@ const giro = 'rotate(-14 300 280)';
   .v-panel__linea {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
-    animation: v-trazar 1.6s var(--ease) 0.9s forwards;
+    animation: v-trazar 1.6s var(--ease) calc(var(--retraso-intro, 0s) + 0.9s) forwards;
   }
 
   .v-panel__filas {

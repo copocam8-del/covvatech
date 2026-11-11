@@ -1,0 +1,197 @@
+---
+/**
+ * Intro de entrada: pantalla negra de marca con el símbolo del logo y "covva tech".
+ *
+ * Cómo funciona:
+ * - Por defecto está oculta. Un script mínimo (abajo, se ejecuta antes de mostrar la página)
+ *   la activa agregando la clase `intro-activa` a <html>, solo si:
+ *     · es la primera vez en la sesión del navegador, y
+ *     · la persona no tiene activado "reducir movimiento".
+ *   Si JavaScript falla, nunca se activa y la web se ve normalmente.
+ * - Toda la animación y el desvanecimiento final los hace el CSS (2,4 s en total),
+ *   así que aunque algo fallara a mitad de camino, la intro desaparece igual.
+ * - Se puede saltear con clic, toque, rueda del mouse o cualquier tecla.
+ * - La web carga por debajo al mismo tiempo; la intro está oculta para lectores de pantalla.
+ * - El logo no se modifica: se anima la imagen completa (fundido, escala y revelado).
+ *   Se usa covva-simbolo-intro.png, cuyo fondo se difumina a transparente en los bordes.
+ */
+import { Image } from 'astro:assets';
+// Recorte del símbolo con los bordes del fondo difuminados a transparente
+// (los píxeles del símbolo no se modifican), para que se funda con el negro de la intro.
+import simbolo from '../assets/brand/covva-simbolo-intro.png';
+---
+
+<script is:inline>
+  (function () {
+    var html = document.documentElement;
+    try {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (sessionStorage.getItem('covva-intro')) return;
+      sessionStorage.setItem('covva-intro', '1');
+    } catch (e) {
+      return; // sin almacenamiento disponible: no se muestra
+    }
+    html.classList.add('intro-activa');
+
+    var eventos = ['pointerdown', 'keydown', 'wheel', 'touchstart'];
+    var salteada = false;
+    var respaldo;
+
+    function quitarEscuchas() {
+      eventos.forEach(function (ev) { window.removeEventListener(ev, saltear, true); });
+    }
+
+    // Quita la intro del documento cuando ya terminó de desvanecerse
+    function quitar() {
+      clearTimeout(respaldo);
+      var intro = document.getElementById('intro');
+      if (!intro) return;
+      // Si el desvanecimiento todavía está en curso (por ejemplo, porque los estilos
+      // tardaron en cargar), se espera un poco más en lugar de cortarlo de golpe.
+      var enCurso = intro.getAnimations && intro.getAnimations().some(function (a) {
+        return a.playState !== 'finished';
+      });
+      if (enCurso) {
+        respaldo = setTimeout(quitar, 200);
+        return;
+      }
+      intro.remove();
+      quitarEscuchas();
+    }
+
+    function saltear() {
+      if (salteada) return;
+      salteada = true;
+      quitarEscuchas();
+      var intro = document.getElementById('intro');
+      if (intro) intro.classList.add('intro--saliendo');
+      // Las animaciones del hero arrancan ahora, en lugar de esperar el final de la intro
+      var t = document.timeline && document.timeline.currentTime;
+      html.style.setProperty('--retraso-intro', Math.max(0, (t || performance.now()) / 1000) + 's');
+      clearTimeout(respaldo);
+      respaldo = setTimeout(quitar, 450); // el desvanecimiento rápido dura 0,3 s
+    }
+
+    eventos.forEach(function (ev) { window.addEventListener(ev, saltear, { capture: true, passive: true }); });
+
+    // Fin natural: el CSS la desvanece entre 1,9 y 2,4 s. Se quita con el evento de fin
+    // de animación o, como respaldo, con un temporizador.
+    document.addEventListener('animationend', function (e) {
+      if (e.target && e.target.id === 'intro' && /^intro-salir/.test(e.animationName)) quitar();
+    });
+    respaldo = setTimeout(quitar, 2600);
+  })();
+</script>
+
+<div id="intro" class="intro" aria-hidden="true">
+  <div class="intro__contenido">
+    <Image
+      src={simbolo}
+      alt=""
+      class="intro__simbolo"
+      width={390}
+      height={210}
+      densities={[1, 2]}
+      loading="eager"
+      decoding="async"
+    />
+    <p class="intro__texto">covva tech</p>
+  </div>
+</div>
+
+<style is:global>
+  .intro {
+    display: none;
+  }
+
+  html.intro-activa {
+    /* Las animaciones de entrada del hero esperan a que termine la intro */
+    --retraso-intro: 2s;
+  }
+
+  html.intro-activa .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    background: #08070d;
+    animation: intro-salir 0.5s ease 1.9s forwards;
+  }
+
+  /* Salteada: se desvanece enseguida */
+  html.intro-activa .intro.intro--saliendo {
+    animation: intro-salir-rapido 0.3s ease forwards;
+  }
+
+  .intro__contenido {
+    display: grid;
+    justify-items: center;
+    gap: 0.25rem;
+  }
+
+  .intro__simbolo {
+    width: min(78vw, 390px);
+    height: auto;
+    /* "lighten" nivela al negro de la intro los píxeles de fondo más oscuros que él;
+       los bordes difuminados de la imagen evitan que se note el contorno del recorte. */
+    mix-blend-mode: lighten;
+    opacity: 0;
+    /* Revelado suave de izquierda a derecha, como un barrido de luz */
+    -webkit-mask-image: linear-gradient(90deg, #000 40%, transparent 60%);
+    mask-image: linear-gradient(90deg, #000 40%, transparent 60%);
+    -webkit-mask-size: 260% 100%;
+    mask-size: 260% 100%;
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+    transform: scale(0.96);
+    animation: intro-simbolo 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+  }
+
+  .intro__texto {
+    margin-top: 1rem;
+    color: #c9b8f8;
+    font-family: 'Sora Variable', 'Sora', system-ui, sans-serif;
+    font-size: clamp(0.95rem, 0.8rem + 0.8vw, 1.2rem);
+    font-weight: 300;
+    letter-spacing: 0.38em;
+    /* compensa el espaciado de la última letra para que quede centrado */
+    padding-left: 0.38em;
+    opacity: 0;
+    transform: translateY(6px);
+    animation: intro-texto 0.7s ease 0.7s forwards;
+  }
+
+  @keyframes intro-simbolo {
+    to {
+      opacity: 1;
+      transform: none;
+      -webkit-mask-position: 0 0;
+      mask-position: 0 0;
+    }
+  }
+
+  @keyframes intro-texto {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes intro-salir {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  @keyframes intro-salir-rapido {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+</style>

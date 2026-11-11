@@ -1,11 +1,12 @@
 ---
 import EncabezadoSeccion from './EncabezadoSeccion.astro';
 import Icono from './Icono.astro';
-import { componentes, condiciones } from '../data/suscripcion';
+import { componentes, condiciones, precioDesde } from '../data/suscripcion';
 import { planesReales, hayPlanes } from '../data/visibilidad';
 import { tieneDato } from '../config/sitio';
 
-// Mientras no haya planes cargados en suscripcion.ts, se muestra un bloque de consulta.
+// El bloque de precio de referencia se muestra siempre. Las tarjetas de planes
+// aparecen debajo solo cuando haya planes cargados en suscripcion.ts.
 // La línea de condiciones solo aparece si tiene un texto real.
 const hayCondiciones = tieneDato(condiciones);
 ---
@@ -46,10 +47,25 @@ const hayCondiciones = tieneDato(condiciones);
     </div>
 
     <div class="sus__planes">
+      <div class="sus__precio" data-revelar>
+        <div class="sus__precio-textos">
+          <h3 class="sus__precio-titulo">
+            Planes desde <span class="sus__precio-monto">{precioDesde}</span> por mes
+          </h3>
+          <p class="sus__precio-texto">
+            El valor final depende del alcance de cada proyecto. Consultanos y te enviamos una
+            propuesta con el detalle de lo que incluye.
+          </p>
+        </div>
+        <a href="#contacto" class="boton boton--primario">
+          Consultar planes
+          <Icono nombre="flecha" />
+        </a>
+      </div>
+
       {
-        hayPlanes ? (
+        hayPlanes && (
           <>
-            <h3 class="sus__subtitulo sus__subtitulo--planes">Planes</h3>
             <ul role="list" class="planes" data-revelar>
               {planesReales.map((p) => {
                 const items = p.incluye.filter((item) => tieneDato(item));
@@ -72,26 +88,12 @@ const hayCondiciones = tieneDato(condiciones);
                 );
               })}
             </ul>
-
-            <div class="sus__pie" data-revelar>
-              {hayCondiciones && <p class="sus__condiciones">{condiciones}</p>}
-              <a href="#contacto" class="boton boton--primario">
-                Consultar planes
-                <Icono nombre="flecha" />
-              </a>
-            </div>
+            {hayCondiciones && (
+              <p class="sus__condiciones" data-revelar>
+                {condiciones}
+              </p>
+            )}
           </>
-        ) : (
-          <div class="sus__medida" data-revelar>
-            <p class="sus__medida-texto">
-              Armamos un plan a medida según tu proyecto. Consultanos y te enviamos una propuesta con
-              el detalle de lo que incluye.
-            </p>
-            <a href="#contacto" class="boton boton--primario">
-              Consultar planes
-              <Icono nombre="flecha" />
-            </a>
-          </div>
         )
       }
     </div>
@@ -266,41 +268,50 @@ const hayCondiciones = tieneDato(condiciones);
     color: var(--c-violeta-claro);
   }
 
-  .sus__pie {
+  /* Precio de referencia: bloque destacado, siempre visible */
+  .sus__precio {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 1.5rem;
-    margin-top: 2rem;
-  }
-
-  /* Bloque que reemplaza a las tarjetas mientras no haya planes cargados */
-  .sus__medida {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem 2.5rem;
-    padding: clamp(1.75rem, 4vw, 2.5rem);
-    border: 1px solid var(--c-borde-oscuro);
+    gap: 1.75rem 3rem;
+    padding: clamp(1.75rem, 4.5vw, 2.75rem);
+    border: 1px solid rgb(201 184 248 / 0.22);
     border-radius: var(--radio-lg);
-    background: linear-gradient(120deg, rgb(108 79 214 / 0.16), transparent 60%), var(--c-superficie);
+    background: linear-gradient(120deg, rgb(108 79 214 / 0.2), transparent 60%), var(--c-superficie);
   }
 
-  .sus__medida-texto {
-    flex: 1 1 22rem;
+  .sus__precio-textos {
+    flex: 1 1 24rem;
     max-width: 44rem;
-    color: var(--c-blanco);
-    font-family: var(--f-titulos);
-    font-size: var(--fs-h3);
-    font-weight: 500;
-    line-height: 1.4;
-    letter-spacing: -0.01em;
+  }
+
+  .sus__precio-titulo {
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.625rem, 1.2rem + 1.8vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+
+  .sus__precio-monto {
+    color: var(--c-lila);
+    white-space: nowrap;
+  }
+
+  .sus__precio-texto {
+    color: var(--c-texto-oscuro-2);
+    font-size: var(--fs-md);
+  }
+
+  /* Tarjetas de planes (cuando haya planes cargados) debajo del precio */
+  .sus__precio + .planes {
+    margin-top: 1.5rem;
   }
 
   .sus__condiciones {
     max-width: 40rem;
+    margin-top: 1.5rem;
     color: var(--c-texto-oscuro-2);
     font-size: var(--fs-sm);
   }

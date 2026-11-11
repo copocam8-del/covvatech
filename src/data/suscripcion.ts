@@ -43,5 +43,8 @@ export const planes = [
   },
 ];
 
+/** Precio de referencia que se muestra en la sección y en las preguntas frecuentes. */
+export const precioDesde = '$100.000';
+
 export const condiciones =
   '[Pendiente: condiciones generales de la suscripción (duración mínima, forma de pago, qué pasa al darla de baja)]';

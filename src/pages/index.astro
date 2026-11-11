@@ -10,6 +10,7 @@ import Suscripcion from '../components/Suscripcion.astro';
 import Preguntas from '../components/Preguntas.astro';
 import Contacto from '../components/Contacto.astro';
 import Footer from '../components/Footer.astro';
+import Intro from '../components/Intro.astro';
 import { hayProyectos } from '../data/visibilidad';
 
 // Sin proyectos cargados, la sección Proyectos no se muestra y se ajustan los fondos
@@ -17,6 +18,7 @@ import { hayProyectos } from '../data/visibilidad';
 ---
 
 <Base>
+  <Intro />
   <Navbar />
   <main id="contenido" tabindex="-1">
     <Hero />

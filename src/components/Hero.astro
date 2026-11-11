@@ -78,12 +78,14 @@ import HeroVisual from './HeroVisual.astro';
 
   .hero__texto > * {
     animation: hero-entrar 0.9s var(--ease) both;
+    /* --retraso-intro: tiempo extra mientras se ve la intro (ver Intro.astro) */
+    animation-delay: var(--retraso-intro, 0s);
   }
 
-  .hero__texto > :nth-child(2) { animation-delay: 0.06s; }
-  .hero__texto > :nth-child(3) { animation-delay: 0.12s; }
-  .hero__texto > :nth-child(4) { animation-delay: 0.18s; }
-  .hero__texto > :nth-child(5) { animation-delay: 0.24s; }
+  .hero__texto > :nth-child(2) { animation-delay: calc(var(--retraso-intro, 0s) + 0.06s); }
+  .hero__texto > :nth-child(3) { animation-delay: calc(var(--retraso-intro, 0s) + 0.12s); }
+  .hero__texto > :nth-child(4) { animation-delay: calc(var(--retraso-intro, 0s) + 0.18s); }
+  .hero__texto > :nth-child(5) { animation-delay: calc(var(--retraso-intro, 0s) + 0.24s); }
 
   .hero__etiqueta {
     display: inline-flex;
