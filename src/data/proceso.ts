@@ -2,15 +2,15 @@
 export const pasos = [
   {
     titulo: 'Consulta inicial',
-    texto: 'Nos contás qué necesitás, para quién es y qué querés lograr.',
+    texto: 'Nos contás tu idea, a quién apunta y qué resultado buscás.',
   },
   {
     titulo: 'Análisis y propuesta',
-    texto: 'Estudiamos tu caso y te presentamos una propuesta con el alcance, el plan sugerido y los tiempos estimados.',
+    texto: 'Analizamos tu caso y te enviamos una propuesta con el alcance, el plan sugerido y los tiempos estimados.',
   },
   {
     titulo: 'Diseño y desarrollo',
-    texto: 'Diseñamos y construimos la solución, compartiendo avances para que puedas opinar en el camino.',
+    texto: 'Diseñamos y construimos la solución, y te mostramos avances para que opines en el camino.',
   },
   {
     titulo: 'Revisión y lanzamiento',

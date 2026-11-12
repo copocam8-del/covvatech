@@ -6,7 +6,7 @@
 export const valores = [
   {
     titulo: 'Compromiso',
-    texto: 'Nos hacemos cargo de cada proyecto como si fuera propio, de la primera charla al lanzamiento.',
+    texto: 'Tratamos cada proyecto como si fuera propio, de la primera charla al lanzamiento y después.',
     icono: 'compromiso',
   },
   {
@@ -16,12 +16,12 @@ export const valores = [
   },
   {
     titulo: 'Soluciones a medida',
-    texto: 'Partimos de lo que necesitás vos, no de una plantilla que hay que forzar para que encaje.',
+    texto: 'Partimos de cómo funciona tu negocio, no de una plantilla que hay que forzar.',
     icono: 'medida',
   },
   {
     titulo: 'Calidad',
-    texto: 'Cuidamos el diseño, el funcionamiento y los detalles, aunque no se vean a simple vista.',
+    texto: 'Cuidamos el diseño, el funcionamiento y cada detalle, incluso los que no se ven.',
     icono: 'calidad',
   },
   {

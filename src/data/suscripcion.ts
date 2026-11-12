@@ -10,15 +10,15 @@ export const componentes = [
   },
   {
     titulo: 'Alojamiento',
-    texto: 'El espacio donde tu web queda publicada y disponible.',
+    texto: 'Tu web publicada y siempre disponible.',
   },
   {
     titulo: 'Mantenimiento',
-    texto: 'Actualizaciones y controles para que todo siga funcionando bien.',
+    texto: 'Actualizaciones y controles para que todo siga funcionando como el primer día.',
   },
   {
     titulo: 'Soporte',
-    texto: 'Un canal para consultas, problemas o pedidos de cambios.',
+    texto: 'Un canal directo para consultas, problemas o pedidos de cambios.',
   },
 ];
 

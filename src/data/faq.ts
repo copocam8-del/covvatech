@@ -47,7 +47,7 @@ export const preguntas: { pregunta: string; respuesta: string[] }[] = [
   {
     pregunta: '¿Cómo pido un presupuesto?',
     respuesta: [
-      'Completá el formulario de contacto contándonos qué necesitás, o escribinos por WhatsApp, Instagram o correo.',
+      'Completá el formulario contándonos qué necesitás, o escribinos por WhatsApp, Instagram o correo. Con esa información armamos una propuesta a tu medida.',
     ],
   },
 ];

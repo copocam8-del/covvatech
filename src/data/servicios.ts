@@ -18,24 +18,24 @@ export const servicios: Servicio[] = [
   {
     id: 'landing',
     nombre: 'Landing pages',
-    resumen: 'Una página enfocada en un solo objetivo.',
+    resumen: 'Una página pensada para convertir visitas en consultas.',
     descripcion:
-      'Ideal para presentar un producto, un servicio o una campaña. Todo el contenido está pensado para que quien entra entienda rápido qué ofrecés y te contacte.',
+      'Ideal para lanzar un producto, promocionar un servicio o acompañar una campaña. Cada sección está ordenada para que quien entra entienda rápido qué ofrecés y te escriba.',
     incluye: [
       'Diseño a medida, alineado a tu marca',
       'Estructura y textos ordenados en función del objetivo',
       'Acceso directo a tu contacto o WhatsApp',
       'Pensada primero para celulares',
     ],
-    paraQuien: 'Lanzamientos, campañas y profesionales que necesitan presencia online clara.',
+    paraQuien: 'Lanzamientos, campañas publicitarias y profesionales que quieren captar clientes.',
     icono: 'landing',
   },
   {
     id: 'institucional',
     nombre: 'Sitios institucionales',
-    resumen: 'Tu presencia completa en internet.',
+    resumen: 'La carta de presentación de tu marca.',
     descripcion:
-      'Un sitio que cuenta quiénes son, qué hacen y cómo contactarlos, con una imagen a la altura de tu marca y fácil de recorrer desde cualquier dispositivo.',
+      'Un sitio que transmite confianza desde el primer vistazo: quiénes son, qué hacen y cómo contactarlos, con una imagen a la altura de tu marca en cualquier dispositivo.',
     incluye: [
       'Varias secciones o páginas, según lo que necesites comunicar',
       'Diseño coherente con tu identidad visual',
@@ -48,9 +48,9 @@ export const servicios: Servicio[] = [
   {
     id: 'tienda',
     nombre: 'Tiendas online',
-    resumen: 'Vendé por internet, con todo en orden.',
+    resumen: 'Tu tienda abierta las 24 horas.',
     descripcion:
-      'Una tienda con catálogo, carrito y proceso de compra claro, para que tus clientes compren sin fricciones y vos puedas gestionar productos y pedidos.',
+      'Un catálogo claro y una compra simple, para que tus clientes compren sin trabas y vos gestiones productos, stock y pedidos desde un solo lugar.',
     incluye: [
       'Catálogo organizado por categorías',
       'Carrito y proceso de compra simple',
@@ -63,9 +63,9 @@ export const servicios: Servicio[] = [
   {
     id: 'sistema',
     nombre: 'Sistemas y aplicaciones web',
-    resumen: 'Herramientas para ordenar tu operación.',
+    resumen: 'Menos planillas, más control de tu operación.',
     descripcion:
-      'Turnos, clientes, stock, presupuestos o reportes: desarrollamos sistemas que se adaptan a cómo trabaja tu equipo y se usan desde el navegador, sin instalar nada.',
+      'Turnos, clientes, stock, presupuestos o reportes: sistemas que se adaptan a cómo trabaja tu equipo, para ahorrar tiempo y tener la información al día. Se usan desde el navegador, sin instalar nada.',
     incluye: [
       'Relevamiento de tus procesos actuales',
       'Usuarios con distintos permisos',
@@ -78,9 +78,9 @@ export const servicios: Servicio[] = [
   {
     id: 'medida',
     nombre: 'Soluciones a medida',
-    resumen: 'Cuando lo que necesitás no entra en una categoría.',
+    resumen: 'Para problemas que no tienen una solución estándar.',
     descripcion:
-      'Partimos de tu problema, no de una plantilla. Analizamos el caso con vos y proponemos una solución que puede combinar varias de las anteriores.',
+      'Partimos de tu problema, no de una plantilla. Analizamos el caso con vos y diseñamos una solución que puede combinar varias de las anteriores.',
     incluye: [
       'Análisis del problema y del contexto',
       'Propuesta adaptada a tus prioridades',

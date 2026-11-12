@@ -5,15 +5,15 @@ import HeroVisual from './HeroVisual.astro';
 <section id="inicio" class="hero zona-oscura" aria-labelledby="hero-titulo">
   <div class="contenedor hero__grilla">
     <div class="hero__texto">
-      <p class="hero__etiqueta">Desarrollo web por suscripción mensual</p>
+      <p class="hero__etiqueta">Consultora tecnológica · Desarrollo por suscripción</p>
 
       <h1 id="hero-titulo" class="hero__titulo">
-        Tu web, bien hecha <span>y siempre en marcha.</span>
+        Sitios y sistemas que trabajan para tu negocio. <span>Todos los días.</span>
       </h1>
 
       <p class="hero__bajada">
-        Sitios, tiendas online y sistemas web a medida, con una suscripción mensual que, según el
-        plan, puede incluir alojamiento, mantenimiento y soporte.
+        Diseñamos sitios, tiendas online y sistemas a medida para que tu negocio venda más y trabaje
+        ordenado. Todo con una cuota mensual.
       </p>
 
       <div class="hero__acciones">
@@ -101,11 +101,29 @@ import HeroVisual from './HeroVisual.astro';
 
   .hero__etiqueta::before {
     content: '';
+    flex-shrink: 0; /* el punto no se deforma si el texto ocupa dos líneas */
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: var(--c-violeta-claro);
     box-shadow: 0 0 0 4px rgb(132 103 232 / 0.2);
+  }
+
+  /* En pantallas angostas el texto no entra en una línea: se muestra sin el borde
+     de píldora, como una etiqueta de texto con el punto alineado a la primera línea. */
+  @media (max-width: 559.98px) {
+    .hero__etiqueta {
+      align-items: baseline;
+      padding: 0 0 0 0.35rem;
+      border: 0;
+      border-radius: 0;
+      line-height: 1.5;
+    }
+
+    .hero__etiqueta::before {
+      position: relative;
+      top: -0.1em;
+    }
   }
 
   .hero__titulo {

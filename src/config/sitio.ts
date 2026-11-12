@@ -13,9 +13,9 @@ export const sitio = {
   /** Dominio definitivo, sin barra final. Ej.: 'https://www.covva.com.ar' */
   url: '', // [Pendiente: dominio]
 
-  titulo: 'Covva — Desarrollo web a medida por suscripción',
+  titulo: 'Covva | Sitios, tiendas online y sistemas a medida por suscripción',
   descripcion:
-    'Diseñamos y desarrollamos landing pages, sitios institucionales, tiendas online y sistemas web a medida, con un modelo de suscripción mensual.',
+    'Consultora tecnológica: sitios, tiendas online y sistemas web a medida para tu negocio, por suscripción mensual desde $100.000.',
 
   idioma: 'es-AR',
   colorTema: '#08070D',
