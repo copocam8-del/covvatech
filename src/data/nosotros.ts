@@ -1,7 +1,7 @@
 /**
  * Contenido de la sección "Nosotros".
- * Los datos de la fundadora y del equipo quedan como [Pendiente: …] hasta tenerlos.
- * Para agregar una foto, guardala en src/assets/equipo/ y poné el nombre del archivo en `foto`.
+ * Fotos: guardarlas en src/assets/equipo/ con el nombre indicado en `foto`.
+ * Mientras la foto no exista, se muestran las iniciales del nombre en un círculo.
  */
 export const valores = [
   {
@@ -11,7 +11,7 @@ export const valores = [
   },
   {
     titulo: 'Atención personalizada',
-    texto: 'Hablás siempre con las mismas personas, que conocen tu proyecto y responden con claridad.',
+    texto: 'Hablás directamente con quien diseña y desarrolla tu proyecto.',
     icono: 'atencion',
   },
   {
@@ -32,14 +32,16 @@ export const valores = [
 ] as const;
 
 export const fundadora = {
-  nombre: '[Pendiente: nombre de la fundadora]',
-  rol: '[Pendiente: rol]',
-  bio: '[Pendiente: breve presentación de la fundadora, en dos o tres líneas]',
-  foto: '', // ej.: 'fundadora.jpg'
+  nombre: 'Camila Copo',
+  rol: 'Fundadora y desarrolladora',
+  bio: 'Estoy cursando el último año de Analista de Sistemas y combino esa formación con proyectos reales: diseñé y desarrollé de punta a punta plataformas como Corta La Bocha, Cleo y RouteControl. Creé Covva para que cada negocio trabaje directamente con quien piensa y construye su solución, sin intermediarios.',
+  /** Se usa automáticamente cuando exista src/assets/equipo/foto-fundadora.jpg (también acepta .jpeg, .png o .webp) */
+  foto: 'foto-fundadora.jpg',
 };
 
-/** Integrantes del equipo. Si no hay equipo, dejar la lista vacía y el bloque no se muestra. */
-export const equipo: { nombre: string; rol: string; foto: string }[] = [
-  { nombre: '[Pendiente: nombre]', rol: '[Pendiente: rol]', foto: '' },
-  { nombre: '[Pendiente: nombre]', rol: '[Pendiente: rol]', foto: '' },
-];
+/**
+ * Integrantes del equipo. Por ahora Covva es un proyecto unipersonal, así que la lista
+ * está vacía y el bloque no se muestra. Para sumar a alguien:
+ *   { nombre: 'Nombre Apellido', rol: 'Rol', foto: 'archivo.jpg' }
+ */
+export const equipo: { nombre: string; rol: string; foto: string }[] = [];

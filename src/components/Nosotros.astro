@@ -20,8 +20,26 @@ const archivos = import.meta.glob<{ default: ImageMetadata }>(
 const fotos = new Map(
   Object.entries(archivos).map(([ruta, mod]) => [ruta.split('/').pop()!, mod.default]),
 );
-const fotoDe = (archivo: string) => (tieneDato(archivo) ? fotos.get(archivo) : undefined);
+// Busca la foto por nombre; si no está con esa extensión, prueba con .jpg, .jpeg, .png, .webp o .avif
+const sinExtension = (nombre: string) => nombre.replace(/\.[^.]+$/, '').toLowerCase();
+const fotoDe = (archivo: string) => {
+  if (!tieneDato(archivo)) return undefined;
+  if (fotos.has(archivo)) return fotos.get(archivo);
+  const base = sinExtension(archivo);
+  for (const [nombre, img] of fotos) if (sinExtension(nombre) === base) return img;
+  return undefined;
+};
 const fotoFundadora = fotoDe(fundadora.foto);
+
+// Iniciales para mostrar mientras no haya foto (por ejemplo, "Camila Copo" → "CC")
+const iniciales = (nombre: string) =>
+  nombre
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0].toUpperCase())
+    .join('');
 
 // Los bloques de personas solo se muestran con datos reales (ver src/data/visibilidad.ts)
 const hayPersonas = hayFundadora || hayEquipo;
@@ -67,15 +85,22 @@ const hayPersonas = hayFundadora || hayEquipo;
         <div class:list={['nos__personas', { 'nos__personas--doble': hayFundadora && hayEquipo }]}>
           {hayFundadora && (
             <article class="fundadora" aria-labelledby="fundadora-nombre" data-revelar>
-              <div class="foto foto--grande">
-                {fotoFundadora ? (
-                  <Image src={fotoFundadora} alt={`Foto de ${fundadora.nombre}`} widths={[240, 480]} sizes="240px" />
-                ) : (
-                  <Icono nombre="persona" tamano={40} />
-                )}
-              </div>
+              {fotoFundadora ? (
+                <div class="foto foto--grande">
+                  <Image
+                    src={fotoFundadora}
+                    alt={`Foto de ${fundadora.nombre}`}
+                    widths={[140, 280, 420]}
+                    sizes="140px"
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <div class="foto foto--grande foto--iniciales" aria-hidden="true">
+                  {iniciales(fundadora.nombre)}
+                </div>
+              )}
               <div class="fundadora__info">
-                <p class="fundadora__etiqueta">Fundadora</p>
                 <h3 id="fundadora-nombre" class="fundadora__nombre">{fundadora.nombre}</h3>
                 {tieneDato(fundadora.rol) && <p class="fundadora__rol">{fundadora.rol}</p>}
                 {tieneDato(fundadora.bio) && <p class="fundadora__bio">{fundadora.bio}</p>}
@@ -224,10 +249,6 @@ const hayPersonas = hayFundadora || hayEquipo;
   }
 
   @media (min-width: 960px) {
-    .nos__personas:not(.nos__personas--doble) > * {
-      max-width: 48rem;
-    }
-
     .nos__personas--doble {
       grid-template-columns: 1.35fr 1fr;
     }
@@ -275,14 +296,31 @@ const hayPersonas = hayFundadora || hayEquipo;
   .foto--grande {
     width: 140px;
     height: 140px;
-    border-radius: var(--radio-lg);
+    border-radius: 50%;
+    box-shadow: 0 0 0 6px var(--c-lila-tenue);
   }
 
-  .fundadora__etiqueta {
-    margin-bottom: 0.5rem;
-    color: var(--c-violeta);
-    font-size: var(--fs-sm);
+  /* Iniciales con los colores de la marca, mientras no haya foto */
+  .foto--iniciales {
+    background: linear-gradient(140deg, var(--c-violeta) 0%, #8a6cf0 55%, var(--c-lila) 130%);
+    color: var(--c-blanco);
+    font-family: var(--f-titulos);
+    font-size: 2.75rem;
     font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    user-select: none;
+  }
+
+  @media (max-width: 559.98px) {
+    .foto--grande {
+      width: 112px;
+      height: 112px;
+    }
+
+    .foto--iniciales {
+      font-size: 2.25rem;
+    }
   }
 
   .fundadora__nombre {
@@ -296,6 +334,7 @@ const hayPersonas = hayFundadora || hayEquipo;
   }
 
   .fundadora__bio {
+    max-width: 46rem; /* largo de línea cómodo aunque la tarjeta ocupe todo el ancho */
     color: var(--c-texto);
   }
 

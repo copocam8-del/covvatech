@@ -4,6 +4,8 @@ import '@fontsource-variable/sora';
 import '../styles/tokens.css';
 import '../styles/base.css';
 import { sitio, canales } from '../config/sitio';
+import { fundadora } from '../data/nosotros';
+import { hayFundadora } from '../data/visibilidad';
 // Tipografías del título y del texto (subconjunto latino) para precargarlas
 import soraLatin from '@fontsource-variable/sora/files/sora-latin-wght-normal.woff2?url';
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
@@ -32,6 +34,7 @@ const datosEstructurados = {
   ...(canales.correo.href && { email: sitio.contacto.email }),
   ...(canales.whatsapp.href && { telephone: `+${sitio.contacto.whatsapp}` }),
   ...(canales.instagram.href && { sameAs: [canales.instagram.href] }),
+  ...(hayFundadora && { founder: { '@type': 'Person', name: fundadora.nombre, jobTitle: fundadora.rol } }),
   knowsLanguage: 'es',
 };
 ---
